@@ -1,0 +1,85 @@
+// Part of Analog_WSAD_Profile#.# keybinds packages
+//---------------------------------------------------------------------------
+//
+// Analog_WSAD scripts from Zeplin for HOTAS and Joystick Integration 0.1
+//
+// Master Branch on GetHub: https://github.com/zeplintwo/FS19-TARGET-Profiles/tree/master
+//
+//      Scripts and codes are inspired from ED and other sources Aussiedroid has heavly influnced me.
+//
+//      This is a early attempt to build a Keymap for Analog_WSAD for the Warthog HOTAS and T16000.m Dual sticks.
+//      Most of the code checks out and works in exteral testing and the short game play that I have tested it. 
+//
+//      Please report any bugs, features or suggestion to above script branch.
+//
+//      This is a WIP there will be issues.
+//
+//      Use Analog_WSAD_User-Setting-v#.#.ttm to adjust user preferances.
+//
+//      Script is built on the basis of a default Analog_WSAD keybind as of Alpha 3 r0.18.6.       
+//
+//  Use Analog_WSAD-Keymaps-v#.#.ttm to adjust any changes to keybinds for script to function properly. I will try to keep up with changes as needed.
+//
+//---------------------------------------------------------------------------
+include "target_zeplin_dx128-v0.1.tmh"              //modded target.tmh file so that it looks diffrent from stock
+include "Analog_WSAD_Keymapings.ttm"                //Keybinds for DU to TARGET scripting including the 128 DX Buttons for future usage
+include "Analog_WSAD_Macros.ttm"                    //macros for the script to work properly
+include "Analog_WSAD_User_Settings.ttm"             //User editable setting for the script
+include "Analog_WSAD_Pre-Axis_Macros.ttm"           //macros for the Axis to Key with a dutycycle logic
+
+//program startup
+int main()
+{
+    //following lines turn off other thrustmaster stick
+    Configure(&HCougar, MODE_EXCLUDED);
+    Configure(&JoystickF18, MODE_EXCLUDED);
+	Configure(&LMFD, MODE_EXCLUDED);
+	Configure(&RMFD, MODE_EXCLUDED);
+	Configure(&TFRPRudder, MODE_EXCLUDED);
+	Configure(&TWCSThrottle, MODE_EXCLUDED);
+	Configure(&TFRPHARudder, MODE_EXCLUDED);	
+	//end of exclustions
+	
+	if(Init(&EventHandle)) return 1; // declare the event handler, return on error
+    SetKBRate(PulseLength, DelayLength);
+	SetKBLayout(KB_ENG);
+	
+	HOTASDuals(); // Exclusion calls for dual or Warthog HOTAS
+    JoyMapAxis(); // Call to map axis to controlers
+    JoyAxisCurveSet(); // Call to set Joystick Curves
+}
+
+//event handler
+int EventHandle(int type, alias o, int x)
+{       
+    DefaultMapping(&o, x);
+	//add event handling code here
+    
+    if (AnalogWASD_Pre_axis == 1){	//Coding needed to make Joystick Axis control a key with a dutycycle 
+        JoyAxisToKeySet(); //Call to set Vars for Axis->Key
+        
+        if (JoyYValue < (-MinRange) | JoyYValue > MinRange){//Joystick Y axis
+            OnDutyTime = PWMPressY(JoyYValue);
+            if (OnDutyTime > 0){
+	           AxisToKey (OnDutyTime, PitchUp);
+	           //printf("Point 1 > %i, %i \xa",JoyYValue,OnDutyTime);
+	           }
+            if (OnDutyTime < 0){
+	           AxisToKey (abs(OnDutyTime), PitchDown);
+	           //printf("Point 1 > %i, %i \xa",JoyYValue,OnDutyTime);
+	           }        
+            }
+            
+        if (JoyXValue < (-MinRange) | JoyXValue > MinRange){//Joystick X axis
+            OnDutyTime = PWMPressX(JoyXValue);
+            if (OnDutyTime > 0){
+	           AxisToKey (OnDutyTime, RollRight);
+	           //printf("Point 1 > %i, %i \xa",JoyXValue,OnDutyTime);
+	           }
+            if (OnDutyTime < 0){
+	           AxisToKey (abs(OnDutyTime), RollLeft);
+	           //printf("Point 1 > %i, %i \xa",JoyXValue,OnDutyTime);
+	           }        
+            }
+        }
+    }

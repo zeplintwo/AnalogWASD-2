@@ -1,0 +1,129 @@
+// Part of Analog_WSAD_Profile#.# keybinds packages
+//---------------------------------------------------------------------------
+// MACRO VARIABLE INITALISATION
+//---------------------------------------------------------------------------
+
+int     OnDutyTime          = 0;
+int     LastLessY           = -1;
+int     LastGreaterY        = 1;
+int     LastLessX           = -1;
+int     LastGreaterX        = 1;
+
+int     DeltaPitch          = 0;
+int     DeltaYaw            = 0;
+int     DeltaRoll           = 0;
+int     LastPitch           = 0;
+int     LastYaw             = 0;
+int     LastRoll            = 0;
+
+//---------------------------------------------------------------------------
+// CUSTOM FUNCTIONS
+//---------------------------------------------------------------------------
+
+int JoyAxisToKeySet(){
+    if (WarthogStick == 1){
+        JoyYValue = Joystick[JOYY];// Pitch
+        JoyXValue = Joystick[JOYX];// Roll
+        JoyHalfRange = A10JoyHalfRange;
+        MinRange = A10JoyAxisRange*DeadZoneCalPerc;
+        }
+    else if (WarthogStick == 0){
+        JoyYValue = T16000L[JOYY];
+        JoyXValue = T16000L[JOYX];
+        JoyHalfRange = T16000HalfRange;
+        MinRange = T16000AxisRange*DeadZoneCalPerc;
+        }
+    }
+
+int AxisToKey(int DC,short PKey){// Application of Dutycycle call to keypress
+    ActKey(LOCK+KEYON+PKey);
+    DeferCall(DC,&ActKey,PKey);
+    //printf("Duty Cycle : %i \xa",DC);
+    DeferCall(PWMTimeLenght,&ActKey,LOCK);
+    }
+
+int PWMPressY (int mag){// Math to convert Joystick Value to duty cycle in ms of a keypress. Dutycycle time is 100ms
+    float fduty = 0.0;
+    int duty = 0;
+    if (mag > 0){
+        fduty = (abs(mag)/JoyHalfRange)*PWMTimeLenght;
+        duty = fduty-fduty%1;
+        //printf("PW Mag Cal Y+: %i, %i \xa",mag,duty);
+        return(DutyGreaterY(duty));
+        }
+    if (mag < 0){
+        fduty =  -((abs(mag)/JoyHalfRange)*PWMTimeLenght);
+        duty = fduty-fduty%1;
+        //printf("PW Mag Cal Y-: %i, %i \xa",mag,duty);
+        return(DutyLessY(duty));
+        }
+    }
+    
+int PWMPressX (int mag){// Math to convert Joystick Value to duty cycle in ms of a keypress. Dutycycle time is 100ms
+    float fduty = 0.0;
+    int duty = 0;
+    if (mag > 0){
+        fduty = (abs(mag)/JoyHalfRange)*PWMTimeLenght;
+        duty = fduty-fduty%1;
+        //printf("PW Mag Cal X+: %i, %i \xa",mag,duty);
+        return(DutyGreaterX(duty));
+        }
+    if (mag < 0){
+        fduty =  -((abs(mag)/JoyHalfRange)*PWMTimeLenght);
+        duty = fduty-fduty%1;
+        //printf("PW Mag Cal X-: %i, %i \xa",mag,duty);
+        return(DutyLessX(duty));
+        }
+    }
+
+int DutyLessY (int duty){// Math to dampen return to zero values
+    if (LastLessY > duty){
+        LastLessY = duty;
+        //printf("Duty Less Y: %i \xa",duty);
+        return 0;
+        }
+    if (LastLessY <= duty){
+        LastLessY = duty;
+        //printf("Duty Less Y: %i \xa",duty);
+        return duty;
+        }
+    }
+    
+int DutyGreaterY (int duty){// Math to dampen return to zero values
+    if (LastGreaterY >= duty){
+        LastGreaterY = duty;
+        //printf("Duty Greater Y: %i \xa",duty);
+        return duty;
+        }
+    if (LastGreaterY < duty){
+        LastGreaterY = duty;
+        //printf("Duty Greater Y: %i \xa",duty);
+        return 0;
+        }
+    }
+    
+int DutyLessX (int duty){// Math to dampen return to zero values
+    if (LastLessX > duty){
+        LastLessX = duty;
+        //printf("Duty Less X: %i \xa",duty);
+        return 0;
+        }
+    if (LastLessX <= duty){
+        LastLessX = duty;
+        //printf("Duty Less X: %i \xa",duty);
+        return duty;
+        }
+    }
+    
+int DutyGreaterX (int duty){// Math to dampen return to zero values
+    if (LastGreaterX >= duty){
+        LastGreaterX = duty;
+        //printf("Duty Greater X: %i \xa",duty);
+        return duty;
+        }
+    if (LastGreaterX < duty){
+        LastGreaterX = duty;
+        //printf("Duty Greater X: %i \xa",duty);
+        return 0;
+        }
+    }
