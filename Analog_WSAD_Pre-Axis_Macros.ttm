@@ -50,7 +50,7 @@ int AxisToKeySet(){
 int AxisToKey(int DC,short PKey){// Application of Dutycycle call to keypress
     ActKey(LOCK+KEYON+PKey);
     DeferCall((DC+TouchDelay),&ActKey,PKey);
-    printf("Duty Cycle : %i \xa",DC);
+    //printf("Duty Cycle : %i \xa",DC);
     //DeferCall(PWMTimeLenght,&ActKey,LOCK);
     }
 
