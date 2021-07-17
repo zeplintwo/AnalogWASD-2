@@ -4,10 +4,6 @@
 //---------------------------------------------------------------------------
 
 int     OnDutyTime          = 0;
-int     LastLessY           = -1;
-int     LastGreaterY        = 1;
-int     LastLessX           = -1;
-int     LastGreaterX        = 1;
 
 int     DeltaPitch          = 0;
 int     DeltaYaw            = 0;
@@ -16,22 +12,45 @@ int     LastPitch           = 0;
 int     LastYaw             = 0;
 int     LastRoll            = 0;
 
+//----------
+// Arrays
+//----------
+
+int     LastJoy1[]           = {-1,0,-1,0,-1,0}; //pos 1 joy1y negative,pos 2 joy1y positve, pos 3 Joy1x negative, pos 4 joy1x positive, pos 5 joy1z negative, pos 6 joy1z positve
+
 //---------------------------------------------------------------------------
 // CUSTOM FUNCTIONS
 //---------------------------------------------------------------------------
 
-int JoyAxisToKeySet(){
+int AxisToKeySet(){
     if (WarthogStick == 1){
-        JoyYValue = Joystick[JOYY];// Pitch
-        JoyXValue = Joystick[JOYX];// Roll
-        JoyHalfRange = A10JoyHalfRange;
-        MinRange = A10JoyAxisRange*DeadZoneCalPerc;
+        Joy1YValue = Joystick[JOYY];// Pitch
+        Joy1XValue = Joystick[JOYX];// Roll
+        Joy1HalfRange = A10JoyHalfRange;
+        MinRange1 = A10JoyAxisRange*DeadZoneCalPerc;
         }
-    else if (WarthogStick == 0){
-        JoyYValue = T16000L[JOYY];
-        JoyXValue = T16000L[JOYX];
-        JoyHalfRange = T16000HalfRange;
-        MinRange = T16000AxisRange*DeadZoneCalPerc;
+    if (WarthogThrottle == 1){
+        //Mouse2XValue = Throttle[SCX];// Mouse up/down
+        //Mouse2YValue = Throttle[SCY];// Mouse left/right
+        Joy2YValue = Throttle[THR_RIGHT]; // Main Forward Thrust
+        Joy2XValue = Throttle[THR_LEFT];
+        Joy2ZValue = Throttle[THR_FC];
+        Joy2HalfRange = A10JoyAxisRange;
+        MinRange2 = A10JoyAxisRange*DeadZoneCalPerc;
+        }
+    if (T16000Right == 1){
+        Joy1YValue = T16000[JOYY]; // Pitch
+        Joy1XValue = T16000[JOYX]; // Roll
+        Joy1ZValue = T16000[RUDDER]; // Yaw
+        Joy1HalfRange = T16000HalfRange;
+        MinRange1 = T16000AxisRange*DeadZoneCalPerc;
+        }
+    if (T16000Left == 1){
+        Joy1YValue = T16000L[JOYY]; // Pitch
+        Joy1XValue = T16000L[JOYX]; // Roll
+        Joy1ZValue = T16000L[RUDDER]; // Yaw
+        Joy1HalfRange = T16000HalfRange;
+        MinRange1 = T16000AxisRange*DeadZoneCalPerc;
         }
     }
 
@@ -42,88 +61,46 @@ int AxisToKey(int DC,short PKey){// Application of Dutycycle call to keypress
     DeferCall(PWMTimeLenght,&ActKey,LOCK);
     }
 
-int PWMPressY (int mag){// Math to convert Joystick Value to duty cycle in ms of a keypress. Dutycycle time is 100ms
+int PWMPress (int mag){// Math to convert Joystick Value to duty cycle in ms of a keypress. Dutycycle time is 100ms
     float fduty = 0.0;
     int duty = 0;
     if (mag > 0){
-        fduty = (abs(mag)/JoyHalfRange)*PWMTimeLenght;
+        fduty = (abs(mag)/Joy1HalfRange)*PWMTimeLenght;
         duty = fduty-fduty%1;
         //printf("PW Mag Cal Y+: %i, %i \xa",mag,duty);
-        return(DutyGreaterY(duty));
+        return(DutyGreater(duty,1));
         }
     if (mag < 0){
-        fduty =  -((abs(mag)/JoyHalfRange)*PWMTimeLenght);
+        fduty =  -((abs(mag)/Joy1HalfRange)*PWMTimeLenght);
         duty = fduty-fduty%1;
         //printf("PW Mag Cal Y-: %i, %i \xa",mag,duty);
-        return(DutyLessY(duty));
-        }
-    }
-    
-int PWMPressX (int mag){// Math to convert Joystick Value to duty cycle in ms of a keypress. Dutycycle time is 100ms
-    float fduty = 0.0;
-    int duty = 0;
-    if (mag > 0){
-        fduty = (abs(mag)/JoyHalfRange)*PWMTimeLenght;
-        duty = fduty-fduty%1;
-        //printf("PW Mag Cal X+: %i, %i \xa",mag,duty);
-        return(DutyGreaterX(duty));
-        }
-    if (mag < 0){
-        fduty =  -((abs(mag)/JoyHalfRange)*PWMTimeLenght);
-        duty = fduty-fduty%1;
-        //printf("PW Mag Cal X-: %i, %i \xa",mag,duty);
-        return(DutyLessX(duty));
+        return(DutyLess(duty,0));
         }
     }
 
-int DutyLessY (int duty){// Math to dampen return to zero values
-    if (LastLessY > duty){
-        LastLessY = duty;
-        //printf("Duty Less Y: %i \xa",duty);
-        return 0;
-        }
-    if (LastLessY <= duty){
-        LastLessY = duty;
-        //printf("Duty Less Y: %i \xa",duty);
+int DutyLess (int duty,int pos){// Math to dampen return to zero values
+    if (LastJoy1[pos] >= duty){
+        LastJoy1[pos] = duty;
+        //printf("Duty Less Ret: %i \xa",duty);
         return duty;
         }
+    else {
+        LastJoy1[pos] = duty;
+        //printf("Duty Less Disc: %i \xa",duty);
+        return 0; 
+        }
+   
     }
     
-int DutyGreaterY (int duty){// Math to dampen return to zero values
-    if (LastGreaterY >= duty){
-        LastGreaterY = duty;
-        //printf("Duty Greater Y: %i \xa",duty);
+int DutyGreater (int duty,int pos){// Math to dampen return to zero values
+    if (LastJoy1[pos] >= duty){
+        LastJoy1[pos] = duty;
+        //printf("Duty Greater Ret: %i \xa",duty);
         return duty;
         }
-    if (LastGreaterY < duty){
-        LastGreaterY = duty;
-        //printf("Duty Greater Y: %i \xa",duty);
-        return 0;
-        }
-    }
-    
-int DutyLessX (int duty){// Math to dampen return to zero values
-    if (LastLessX > duty){
-        LastLessX = duty;
-        //printf("Duty Less X: %i \xa",duty);
-        return 0;
-        }
-    if (LastLessX <= duty){
-        LastLessX = duty;
-        //printf("Duty Less X: %i \xa",duty);
-        return duty;
-        }
-    }
-    
-int DutyGreaterX (int duty){// Math to dampen return to zero values
-    if (LastGreaterX >= duty){
-        LastGreaterX = duty;
-        //printf("Duty Greater X: %i \xa",duty);
-        return duty;
-        }
-    if (LastGreaterX < duty){
-        LastGreaterX = duty;
-        //printf("Duty Greater X: %i \xa",duty);
+    else{
+        LastJoy1[pos] = duty;
+        //printf("Duty Greater Disc: %i \xa",duty);
         return 0;
         }
     }

@@ -12,68 +12,114 @@ int     MorseDelay          = 200;
 // CUSTOM FUNCTIONS
 //---------------------------------------------------------------------------
 
-int JoyMapAxis(){
-    if (WarthogStick ==1){
-        MapAxis(&Joystick, JOYX, DX_X_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);     
-        MapAxis(&Joystick, JOYY, DX_Y_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
-        //MapAxis(&Throttle, SCX, MOUSE_X_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
-        //MapAxis(&Throttle, SCY, MOUSE_Y_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
-        //MapAxis(&Throttle, THR_RIGHT, DX_THROTTLE_AXIS, AXIS_REVERSED, MAP_ABSOLUTE);
-        //MapAxis(&Throttle, THR_LEFT, DX_SLIDER_AXIS, AXIS_REVERSED, MAP_ABSOLUTE);
-        //MapAxis(&Throttle, THR_FC, DX_ZROT_AXIS, AXIS_REVERSED, MAP_ABSOLUTE);
+int ControlAxisCurveSetup(){ //exclusion switching for Duals or Warthog HOTAS
+    printf("\xa");
+    if (WarthogStick == 1 & T16000Right == 0){ //Selection of Warthog Stick for Right Side
+        if (T16000Left == 0) {
+            Configure(&T16000, MODE_EXCLUDED);
+            }
+        printf("---Warthog Joystick Loading \xa");
+        JoyA10Set();
         }
-    else {
-        MapAxis(&T16000L, JOYX, DX_X_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
-        MapAxis(&T16000L, JOYY, DX_Y_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
-        MapAxis(&T16000L, RUDDER, DX_Z_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
-        MapAxis(&T16000L, JOYX, DX_XROT_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
-        MapAxis(&T16000L, JOYY, DX_YROT_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
-        MapAxis(&T16000L, RUDDER, DX_ZROT_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+    else if (T16000Right == 1 & WarthogStick == 0){
+        Configure(&Joystick, MODE_EXCLUDED);
+        printf("---T16000.m Right Loading \xa");
+        JoyT16Set();
+        }
+    else{
+        SettingError('R');
+        }
+    
+    if (WarthogThrottle == 1 & T16000Left == 0){
+        if (T16000Right == 0) {
+            Configure(&T16000, MODE_EXCLUDED);
+            }
+        printf("---Warthog Throttle Loading \xa");
+        ThrA10Set();
+        }
+    else if (T16000Left==1 & WarthogThrottle == 0){
+        Configure(&Throttle, MODE_EXCLUDED);
+        printf("---T16000.m Left Loading \xa");
+        JoyT16Set();
+        }
+    else{
+        SettingError('L');
         }
     }
 
-int JoyAxisCurveSet(){
-    if (WarthogStick == 1){ 
-        //Warthog HOTAS Curves
-	    SetSCurve(&Joystick, JOYX, 0,JSDeadZone,0,(JSCurve[JSProfile]/2),JSZoom[JSProfile]);
-	    SetSCurve(&Joystick, JOYY, 0,JSDeadZone,0,(JSCurve[JSProfile]/2),JSZoom[JSProfile]);
-	    printf("---Right Warthog Joystick Curves Set \xa") ;
-	    //SetSCurve(&Throttle, SCX, 0, JSDeadZone, 0, 0, 0);
-	    //SetSCurve(&Throttle, SCY, 0, JSDeadZone, 0, 0, 0);
-	    //SetJCurve(&Throttle, THR_RIGHT, 50, 50);
-	    //SetJCurve(&Throttle, THR_LEFT, 50, 50);
-	    //SetJCurve(&Throttle, THR_FC, 50, 50);
-	    //printf("---Left Warthog Throttle Curves Set \xa"); 
-        }
-	else { //Dual T16000.m Curves
+
+int JoyA10Set(){
+    MapAxis(&Joystick, JOYX, DX_X_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);     
+    MapAxis(&Joystick, JOYY, DX_Y_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+    //Warthog Joystick Curves
+	SetSCurve(&Joystick, JOYX, 0,JSDeadZone,0,(JSCurve[JSProfile]/2),JSZoom[JSProfile]);
+	SetSCurve(&Joystick, JOYY, 0,JSDeadZone,0,(JSCurve[JSProfile]/2),JSZoom[JSProfile]);
+	printf("---Warthog Joystick Curves Set \xa") ;
+	WarthogJoyBinds();
+	}    
+    
+int ThrA10Set(){
+    MapAxis(&Throttle, SCX, MOUSE_X_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+    MapAxis(&Throttle, SCY, MOUSE_Y_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+    MapAxis(&Throttle, THR_RIGHT, DX_THROTTLE_AXIS, AXIS_REVERSED, MAP_ABSOLUTE);
+    MapAxis(&Throttle, THR_LEFT, DX_SLIDER_AXIS, AXIS_REVERSED, MAP_ABSOLUTE);
+    MapAxis(&Throttle, THR_FC, DX_ZROT_AXIS, AXIS_REVERSED, MAP_ABSOLUTE);
+    //Warthog Throttle Curves
+    SetSCurve(&Throttle, SCX, 0, JSDeadZone, 0, 0, 0);
+	SetSCurve(&Throttle, SCY, 0, JSDeadZone, 0, 0, 0);
+	SetJCurve(&Throttle, THR_RIGHT, 50, 50);
+	SetJCurve(&Throttle, THR_LEFT, 50, 50);
+	SetJCurve(&Throttle, THR_FC, 50, 50);
+	printf("---Warthog Throttle Curves Set \xa");
+    WarthogThrottleBinds();	
+    }
+    
+int JoyT16Set(){ //Dual T16000.m Curves
+    if (T16000Left == 1 ){
+        MapAxis(&T16000L, JOYX, DX_XROT_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+        MapAxis(&T16000L, JOYY, DX_YROT_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+        MapAxis(&T16000L, RUDDER, DX_ZROT_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
         //Joystick Curves Left
         SetSCurve(&T16000L, JOYX, 0,JSDeadZone,0,JSCurve[JSProfile],JSZoom[JSProfile]);
         SetSCurve(&T16000L, JOYY, 0,JSDeadZone,0,JSCurve[JSProfile],JSZoom[JSProfile]);
         SetSCurve(&T16000L, RUDDER, 0,JSDeadZone,0,JSCurve[JSProfile],JSZoom[JSProfile]);
-        printf("---Left Joystick Curves Set \xa") ;
+        printf("---T16000.m Left Joystick Curves Set \xa") ;
+        T16LeftBinds();
+        }
+    if (T16000Right == 0 ){
+        MapAxis(&T16000, JOYX, DX_X_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+        MapAxis(&T16000, JOYY, DX_Y_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
+        MapAxis(&T16000, RUDDER, DX_Z_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
         //Joystick Curves Right
         SetSCurve(&T16000, JOYX, 0,JSDeadZone,0,JSCurve[JSProfile],JSZoom[JSProfile]);
         SetSCurve(&T16000, JOYY, 0,JSDeadZone,0,JSCurve[JSProfile],JSZoom[JSProfile]);
         SetSCurve(&T16000, RUDDER, 0,JSDeadZone,0,JSCurve[JSProfile],JSZoom[JSProfile]);
-        printf("---Right Joystick Curves Set \xa");
+        printf("---T16000.m Right Joystick Curves Set \xa");
+        T16RightBinds();
         }
     }
     
-int HOTASDuals(){ //exclusion switching for Duals or Warthog HOTAS
-    if (WarthogStick==0){
-        Configure(&Joystick, MODE_EXCLUDED);
-        Configure(&Throttle, MODE_EXCLUDED);
-        printf("---Dual T16000.m Loading \xa");
-        
+int SettingError(char side){
+    printf("--------------------------- Settings Error ---------------------------\xa");
+    printf("\xa");
+    printf("You can not have more than one device per side (left or right) set to 1 'on'.\xa");
+    printf("\xa");
+    printf("Your error is on %c side.\xa",side);
+    printf("\xa");
+    printf("Correct this in the Analog_WSAD_User_Settings.ttm by changing the\xa");
+    printf("\xa");
+    if (side =='R'){
+        printf("WarthogStick or T16000Right to 0 'Off' ");
         }
-    else if (WarthogStick==1){
-        Configure(&T16000, MODE_EXCLUDED);
-        printf("---Warthog HOTAS Loading \xa");
-        WarthogJoyBinds();
-        //WarthogThrottleBinds();
-        printf("---Warthog Keybinds Loaded \xa");
+    if (side =='L'){
+        printf("WarthogThrottle or T16000Left to 0 'Off' ");
         }
-   }
+    printf("for the one you are not using.\xa");
+    printf("\xa");
+    printf("Once done save and re-run the script.\xa");
+    printf("\xa");
+    printf("--------------------------- End Error ---------------------------\xa");
+    }
    
 int WarthogJoyBinds(){//Keybindings for the Warthog Joysick key assignments.
     MapKeyIOUMD(&Joystick,TG1,0,0,0,0,0,0);
@@ -101,15 +147,21 @@ int WarthogJoyBinds(){//Keybindings for the Warthog Joysick key assignments.
     MapKeyIOUMD(&Joystick,H4L,0,0,0,0,0,0);
     MapKeyIOUMD(&Joystick,H4R,0,0,0,0,0,0);
     MapKeyIOUMD(&Joystick,H4P,0,0,0,0,0,0);
+    printf("---Warthog Joystick Binds Loaded.\xa \xa");
     }
 
 int WarthogThrottleBinds(){//Keybindings for the Warthog Throttle key assignments.
     MapKeyIOUMD(&Throttle,SPDF,Brakes,Brakes,Brakes,Brakes,Brakes,Brakes);
     MapKeyIOUMD(&Throttle,SPDM,0,0,0,0,0,0);
-    MapKeyIOUMD(&Throttle,SPDB,Brakes,Brakes,Brakes,Brakes,Brakes,Brakes);    
+    MapKeyIOUMD(&Throttle,SPDB,Brakes,Brakes,Brakes,Brakes,Brakes,Brakes);
+    printf("---Warthog Throttle Binds Loaded.\xa \xa");    
     }
-   
 
+int T16LeftBinds(){
+    printf("---T16000.m Left Binds Loaded.\xa \xa");    
+    }
     
-    
+int T16RightBinds(){
+    printf("---T16000.m Right Binds Loaded.\xa \xa");    
+    }
     

@@ -44,9 +44,8 @@ int main()
     SetKBRate(PulseLength, DelayLength);
 	SetKBLayout(KB_ENG);
 	
-	HOTASDuals(); // Exclusion calls for dual or Warthog HOTAS
-    JoyMapAxis(); // Call to map axis to controlers
-    JoyAxisCurveSet(); // Call to set Joystick Curves
+	
+	ControlAxisCurveSetup();
 }
 
 //event handler
@@ -56,10 +55,10 @@ int EventHandle(int type, alias o, int x)
 	//add event handling code here
     
     if (AnalogWASD_Pre_axis == 1){	//Coding needed to make Joystick Axis control a key with a dutycycle 
-        JoyAxisToKeySet(); //Call to set Vars for Axis->Key
+        AxisToKeySet(); //Call to set Vars for Axis->Key
         
-        if (JoyYValue < (-MinRange) | JoyYValue > MinRange){//Joystick Y axis
-            OnDutyTime = PWMPressY(JoyYValue);
+        if (Joy1YValue < (-MinRange1) | Joy1YValue > MinRange1){//Joystick Y axis
+            OnDutyTime = PWMPress(Joy1YValue);
             if (OnDutyTime > 0){
 	           AxisToKey (OnDutyTime, PitchUp);
 	           //printf("Point 1 > %i, %i \xa",JoyYValue,OnDutyTime);
@@ -70,8 +69,8 @@ int EventHandle(int type, alias o, int x)
 	           }        
             }
             
-        if (JoyXValue < (-MinRange) | JoyXValue > MinRange){//Joystick X axis
-            OnDutyTime = PWMPressX(JoyXValue);
+        if (Joy1XValue < (-MinRange1) | Joy1XValue > MinRange1){//Joystick X axis
+            OnDutyTime = PWMPress(Joy1XValue);
             if (OnDutyTime > 0){
 	           AxisToKey (OnDutyTime, RollRight);
 	           //printf("Point 1 > %i, %i \xa",JoyXValue,OnDutyTime);
