@@ -5,18 +5,11 @@
 
 int     OnDutyTime          = 0;
 
-int     DeltaPitch          = 0;
-int     DeltaYaw            = 0;
-int     DeltaRoll           = 0;
-int     LastPitch           = 0;
-int     LastYaw             = 0;
-int     LastRoll            = 0;
-
 //----------
 // Arrays
 //----------
 
-int     LastJoy1[]           = {-1,0,-1,0,-1,0}; //pos 1 joy1y negative,pos 2 joy1y positve, pos 3 Joy1x negative, pos 4 joy1x positive, pos 5 joy1z negative, pos 6 joy1z positve
+int     LastJoy1[]           = {-1,0,-1,0,-1,0}; //pos 0 joy1y negative,pos 1 joy1y positve, pos 2 Joy1x negative, pos 3 joy1x positive, pos 4 joy1z negative, pos 5 joy1z positve
 
 //---------------------------------------------------------------------------
 // CUSTOM FUNCTIONS
@@ -56,30 +49,28 @@ int AxisToKeySet(){
 
 int AxisToKey(int DC,short PKey){// Application of Dutycycle call to keypress
     ActKey(LOCK+KEYON+PKey);
-    DeferCall(DC,&ActKey,PKey);
-    //printf("Duty Cycle : %i \xa",DC);
-    DeferCall(PWMTimeLenght,&ActKey,LOCK);
+    DeferCall((DC+TouchDelay),&ActKey,PKey);
+    printf("Duty Cycle : %i \xa",DC);
+    //DeferCall(PWMTimeLenght,&ActKey,LOCK);
     }
 
-int PWMPress (int mag){// Math to convert Joystick Value to duty cycle in ms of a keypress. Dutycycle time is 100ms
+int PWMPress (int mag,int pos1,int pos2){// Math to convert Joystick Value to duty cycle in ms of a keypress. Dutycycle time is 100ms
     float fduty = 0.0;
     int duty = 0;
+    fduty = (abs(mag)/Joy1HalfRange)*PWMTimeLenght;
+    duty = fduty-fduty%1;
     if (mag > 0){
-        fduty = (abs(mag)/Joy1HalfRange)*PWMTimeLenght;
-        duty = fduty-fduty%1;
         //printf("PW Mag Cal Y+: %i, %i \xa",mag,duty);
-        return(DutyGreater(duty,1));
+        return(DutyGreater(duty,pos1));
         }
     if (mag < 0){
-        fduty =  -((abs(mag)/Joy1HalfRange)*PWMTimeLenght);
-        duty = fduty-fduty%1;
         //printf("PW Mag Cal Y-: %i, %i \xa",mag,duty);
-        return(DutyLess(duty,0));
+        return(DutyLess(duty,pos2));
         }
     }
 
 int DutyLess (int duty,int pos){// Math to dampen return to zero values
-    if (LastJoy1[pos] >= duty){
+    if (LastJoy1[pos] <= duty){
         LastJoy1[pos] = duty;
         //printf("Duty Less Ret: %i \xa",duty);
         return duty;

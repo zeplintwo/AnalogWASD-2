@@ -58,26 +58,26 @@ int EventHandle(int type, alias o, int x)
         AxisToKeySet(); //Call to set Vars for Axis->Key
         
         if (Joy1YValue < (-MinRange1) | Joy1YValue > MinRange1){//Joystick Y axis
-            OnDutyTime = PWMPress(Joy1YValue);
+            OnDutyTime = PWMPress(Joy1YValue,0,1);
             if (OnDutyTime > 0){
 	           AxisToKey (OnDutyTime, PitchUp);
-	           //printf("Point 1 > %i, %i \xa",JoyYValue,OnDutyTime);
+	           //printf("Point 1 > %i, %i \xa",Joy1YValue,OnDutyTime);
 	           }
             if (OnDutyTime < 0){
 	           AxisToKey (abs(OnDutyTime), PitchDown);
-	           //printf("Point 1 > %i, %i \xa",JoyYValue,OnDutyTime);
+	           //printf("Point 1 > %i, %i \xa",Joy1YValue,abs(OnDutyTime));
 	           }        
             }
             
         if (Joy1XValue < (-MinRange1) | Joy1XValue > MinRange1){//Joystick X axis
-            OnDutyTime = PWMPress(Joy1XValue);
+            OnDutyTime = PWMPress(Joy1XValue,3,4);
             if (OnDutyTime > 0){
 	           AxisToKey (OnDutyTime, RollRight);
-	           //printf("Point 1 > %i, %i \xa",JoyXValue,OnDutyTime);
+	           //printf("Point 1 > %i, %i \xa",Joy1XValue,OnDutyTime);
 	           }
             if (OnDutyTime < 0){
 	           AxisToKey (abs(OnDutyTime), RollLeft);
-	           //printf("Point 1 > %i, %i \xa",JoyXValue,OnDutyTime);
+	           //printf("Point 1 > %i, %i \xa",Joy1XValue,OnDutyTime);
 	           }        
             }
         }
