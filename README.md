@@ -1,9 +1,9 @@
 # Analog_WASD
----------- WIP ----------
+**---------- WIP ----------**
   
   TARGET scripting software to PWM HOTAS inputs into Duty Cycle timed keypresses.
   
----------- WIP ----------
+**---------- WIP ----------**
 
 This is the first public release of a PWM keypress system for a joystick axis of rotation. 
 
@@ -11,7 +11,8 @@ The idea was that I wanted a block of time (currently at 100ms can be change in 
 This was not a simple task as I have been though no less than 5 code designs. And this current design while works I am not totally satisfied with it is build. 
 I only have the conversion working for a single stick on the Thrustmaster Warthog HOTAS. 
 
-WIP
-But have built in the ability to use the T16000.m Dual sticks (NO TESTING OF T1600.M HAS BEEN DONE). 
+**WIP**
+
+*But have built in the ability to use the T16000.m Dual sticks (NO TESTING OF T1600.M HAS BEEN DONE). *
 
 I am posting for the simple reason I am looking to show the code to get help with some questions that I have not been able to answer from my limited programing knowledge. I have some ideas to get the throttle working. But, with the limited C++ Code base that TARGET has not sure if these ideas will work. 
