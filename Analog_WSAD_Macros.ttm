@@ -119,7 +119,7 @@ int SettingError(char side){
     printf("Once done save and re-run the script.\xa");
     printf("\xa");
     printf("--------------------------- End Error ---------------------------\xa");
-    Abort();
+    abort(Settings_Failure);//will cause Runtime Error as this is to force close on the script
     }
    
 int WarthogJoyBinds(){//Keybindings for the Warthog Joysick key assignments.

@@ -16,7 +16,7 @@
 //
 //      Use Analog_WSAD_User-Setting-v#.#.ttm to adjust user preferances.
 //
-//      Script is built on the basis of a default Analog_WSAD keybind as of Alpha 3 r0.18.6.       
+//      Script is built on the some generic keybinds for the default Analog_WSAD keybinds.       
 //
 //  Use Analog_WSAD-Keymaps-v#.#.ttm to adjust any changes to keybinds for script to function properly. I will try to keep up with changes as needed.
 //
@@ -44,36 +44,52 @@ int main()
     SetKBRate(PulseLength, DelayLength);
 	SetKBLayout(KB_ENG);
 	
-	
-	ControlAxisCurveSetup();
+    ControlAxisCurveSetup();
 }
 
 //event handler
-int EventHandle(int type, alias o, int x)
-{       
+int EventHandle(int type, alias o, int x){       
     DefaultMapping(&o, x);
 	//add event handling code here
     
     if (AnalogWASD_Pre_axis == 1){	//Coding needed to make Joystick Axis control a key with a dutycycle 
         AxisToKeySet(); //Call to set Vars for Axis->Key
-                                         
-        if (Joy1YValue < (-MinRange1) | Joy1YValue > MinRange1){PulseFormer(Joy1YValue,Joy1HalfRange,0,0,1,PitchUp,PitchDown);}//Joystick Y axis
-        if (Joy1XValue < (-MinRange1) | Joy1XValue > MinRange1){PulseFormer(Joy1XValue,Joy1HalfRange,0,2,3,RollRight,RollLeft);}//Joystick X axis
         
-        if (T16000Right == 1) {
-            if (Joy1ZValue < (-MinRange1) | Joy1ZValue > MinRange1){PulseFormer(Joy1ZValue,Joy1HalfRange,0,4,5,YawRight,YawLeft);}//Joystick Z axis
+        if (RightDev.YValue < (-RightDev.MinRangeY) | RightDev.YValue > RightDev.MinRangeY){ //Joystick Y axis
+            PulseFormer(RightDev.YValue,RightDev.HalfRangeY,RightDev.LastNegY,RightDev.LastPosY,RightDev.KeyNegY,RightDev.KeyPosY);
+            }
+        if (RightDev.XValue < (-RightDev.MinRangeX) | RightDev.XValue > RightDev.MinRangeX){ //Joystick X axis
+            PulseFormer(RightDev.XValue,RightDev.HalfRangeX,RightDev.LastNegX,RightDev.LastPosX,RightDev.KeyNegX,RightDev.KeyPosX);
+            }
+        
+        if (T16000Right == 1) { //T16000.m Extra axis for Yaw controle
+            if (RightDev.ZValue < (-RightDev.MinRangeZ) | RightDev.ZValue > RightDev.MinRangeZ){ //Joystick Z axis
+                PulseFormer(RightDev.ZValue,RightDev.HalfRangeZ,RightDev.LastNegZ,RightDev.LastPosZ,RightDev.KeyNegZ,RightDev.KeyPosZ);
+                }
             }
         
         if (WarthogThrottle == 1){
-            if (Joy2YValue < (-MinRange2) | Joy2YValue > MinRange2){PulseFormer(Joy2YValue,Joy2HalfRange,1,0,1,ThrottleUp,ThrottleDown);}//A10 Throttle Y axis
-            if (Joy2XValue < (-MinRange2) | Joy2XValue > MinRange2){PulseFormer(Joy2XValue,Joy2HalfRange,1,2,3,AltThrottleUp,AltThrottleDown);}//A10 Throttle X Axis
-            if (Joy2ZValue < (-MinRange2) | Joy2ZValue > MinRange2){PulseFormer(Joy2ZValue,Joy2HalfRange,1,2,3,TrimInc,TrimDecr);}//A10 Throttle Z Axis
+            if (LeftDev.YValue < (-LeftDev.MinRangeY) | LeftDev.YValue > LeftDev.MinRangeY){ //A10 Throttle Y axis
+                PulseFormer(LeftDev.YValue,LeftDev.HalfRangeY,LeftDev.LastNegY,LeftDev.LastPosY,LeftDev.KeyNegY,LeftDev.KeyPosY);
+            }
+            if (LeftDev.XValue < (-LeftDev.MinRangeX) | LeftDev.XValue > LeftDev.MinRangeX){ //A10 Throttle X Axis
+                PulseFormer(LeftDev.XValue,LeftDev.HalfRangeX,LeftDev.LastNegX,LeftDev.LastPosX,LeftDev.KeyNegX,LeftDev.KeyPosX);
+                }
+            if (LeftDev.ZValue < (-LeftDev.MinRangeZ) | LeftDev.ZValue > LeftDev.MinRangeZ){ //A10 Throttle Z Axis
+                PulseFormer(LeftDev.ZValue,LeftDev.HalfRangeZ,LeftDev.LastNegZ,LeftDev.LastPosZ,LeftDev.KeyNegZ,LeftDev.KeyPosZ);
+                }
             }
             
         if (T16000Left == 1){
-            if (Joy2YValue < (-MinRange2) | Joy2YValue > MinRange2){PulseFormer(Joy2YValue,Joy2HalfRange,0,0,1,ThrottleUp,ThrottleDown);}//Joystick Y axis
-            if (Joy2XValue < (-MinRange2) | Joy2XValue > MinRange2){PulseFormer(Joy2XValue,Joy2HalfRange,0,2,3,TranslateRight,TranslateLeft);}//Joystick X axis
-            if (Joy2ZValue < (-MinRange2) | Joy2ZValue > MinRange2){PulseFormer(Joy2ZValue,Joy2HalfRange,0,4,5,ThrustUp,ThrustDown);}//Joystick Z axis
+            if (LeftDev.YValue < (-LeftDev.MinRangeY) | LeftDev.YValue > LeftDev.MinRangeY){ //Joystick Y axis
+                PulseFormer(LeftDev.YValue,LeftDev.HalfRangeY,LeftDev.LastNegY,LeftDev.LastPosY,LeftDev.KeyNegY,LeftDev.KeyPosY);
+                }
+            if (LeftDev.XValue < (-LeftDev.MinRangeX) | LeftDev.XValue > LeftDev.MinRangeX){ //Joystick X axis
+                PulseFormer(LeftDev.XValue,LeftDev.HalfRangeX,LeftDev.LastNegX,LeftDev.LastPosX,LeftDev.KeyNegX,LeftDev.KeyPosX);
+                }
+            if (LeftDev.ZValue < (-LeftDev.MinRangeZ) | LeftDev.ZValue > LeftDev.MinRangeZ){ //Joystick Z axis
+                PulseFormer(LeftDev.ZValue,LeftDev.HalfRangeZ,LeftDev.LastNegZ,LeftDev.LastPosZ,LeftDev.KeyNegZ,LeftDev.KeyPosZ);
+                }
             }
         }
     }

@@ -3,46 +3,120 @@
 // MACRO VARIABLE INITALISATION
 //---------------------------------------------------------------------------
 
-//----------
-// Arrays
-//----------
+struct JoyDevice{
+    int MinRangeY; //calcuated minimum range for the Y axis of the device
+    int MinRangeX; //calcuated minimum range for the X axis of the device
+    int MinRangeZ; //calcuated minimum range for the Z axis of the device
+    int HalfRangeY; //calcuated half range of the Y axis of the device
+    int HalfRangeX; //calcuated half range of the X axis of the device
+    int HalfRangeZ; //calcuated half range of the Z axis of the device
+    int YValue; //Input Y axis value storage from device at a snapshot
+    int XValue; //Input X axis value storage from device at a snapshot
+    int ZValue; //Input Z axis value storage from device at a snapshot
+    int LastNegY; //Storage point for Y axis last pos for reducing swing when returning to center
+    int LastPosY; //Storage point for Y axis last pos for reducing swing when returning to center
+    int LastNegX; //Storage point for X axis last pos for reducing swing when returning to center
+    int LastPosX; //Storage point for X axis last pos for reducing swing when returning to center
+    int LastNegZ; //Storage point for Z axis last pos for reducing swing when returning to center
+    int LastPosZ; //Storage point for Z axis last pos for reducing swing when returning to center
+    word KeyNegY; //Keypress storage for Y axis negative values
+    word KeyPosY; //Keypress storage for Y axis postive values
+    word KeyNegX; //Keypress storage for X axis negative values
+    word KeyPosX; //Keypress storage for X axis postive values
+    word KeyNegZ; //Keypress storage for Z axis negative values
+    word KeyPosZ; //Keypress storage for Z axis postive values
+    };
+    
+JoyDevice RightDev;
+JoyDevice LeftDev;
 
-int     LastJoy1[]           = {-1,0,-1,0,-1,0}; //pos 0 joy1y negative,pos 1 joy1y positve, pos 2 Joy1x negative, pos 3 joy1x positive, pos 4 joy1z negative, pos 5 joy1z positve
-int     LastJoy2[]           = {-1,0,-1,0,-1,0}; //pos 0 joy1y negative,pos 1 joy1y positve, pos 2 Joy1x negative, pos 3 joy1x positive, pos 4 joy1z negative, pos 5 joy1z positve
 //---------------------------------------------------------------------------
 // CUSTOM FUNCTIONS
 //---------------------------------------------------------------------------
 
 int AxisToKeySet(){
     if (WarthogStick == 1){
-        Joy1YValue = Joystick[JOYY];// Pitch
-        Joy1XValue = Joystick[JOYX];// Roll
-        Joy1HalfRange = A10JoyHalfRange;
-        MinRange1 = A10JoyAxisRange*DeadZoneCalPerc1;
+        RightDev.YValue = Joystick[JOYY];// Pitch
+        RightDev.XValue = Joystick[JOYX];// Roll
+        RightDev.HalfRangeY = A10JoyHalfRange;
+        RightDev.HalfRangeX = A10JoyHalfRange;
+        RightDev.MinRangeY = A10JoyAxisRange*DeadZoneCalPerc1;
+        RightDev.MinRangeX = A10JoyAxisRange*DeadZoneCalPerc1;
+        RightDev.KeyNegY = PitchUp;
+        RightDev.KeyPosY = PitchDown;
+        RightDev.KeyNegX = RollRight;
+        RightDev.KeyPosX = RollLeft;
         }
+        
     if (WarthogThrottle == 1){
         //Mouse2XValue = Throttle[SCX];// Mouse up/down
         //Mouse2YValue = Throttle[SCY];// Mouse left/right
-        Joy2YValue = Throttle[THR_RIGHT]; // Main Forward Thrust
-        Joy2XValue = Throttle[THR_LEFT];
-        Joy2ZValue = Throttle[THR_FC];
-        Joy2HalfRange = A10JoyAxisRange;
-        MinRange2 = A10JoyAxisRange*DeadZoneCalPerc2;
+        LeftDev.YValue = Throttle[THR_RIGHT]; // Main Forward Thrust
+        LeftDev.XValue = Throttle[THR_LEFT];
+        LeftDev.ZValue = Throttle[THR_FC];
+        LeftDev.HalfRangeY = A10JoyHalfRange;
+        LeftDev.HalfRangeX = A10JoyHalfRange;
+        LeftDev.HalfRangeZ = A10JoyHalfRange;
+        LeftDev.MinRangeY = A10JoyAxisRange*DeadZoneCalPerc2;
+        LeftDev.MinRangeX = A10JoyAxisRange*DeadZoneCalPerc2;
+        LeftDev.MinRangeZ = A10JoyAxisRange*DeadZoneCalPerc2;
+        LeftDev.KeyNegY = ThrottleUp;
+        LeftDev.KeyPosY = ThrottleDown;
+        LeftDev.KeyNegX = AltThrottleUp;
+        LeftDev.KeyPosX = AltThrottleDown;
+        LeftDev.KeyNegZ = TrimInc;
+        LeftDev.KeyPosZ = TrimDecr;
         }
+        
     if (T16000Right == 1){
-        Joy1YValue = T16000[JOYY]; // Pitch
-        Joy1XValue = T16000[JOYX]; // Roll
-        Joy1ZValue = T16000[RUDDER]; // Yaw
-        Joy1HalfRange = T16000HalfRange;
-        MinRange1 = T16000AxisRange*DeadZoneCalPerc;
+        RightDev.YValue = T16000[JOYY]; // Pitch
+        RightDev.XValue = T16000[JOYX]; // Roll
+        RightDev.ZValue = T16000[RUDDER]; // Yaw
+        RightDev.HalfRangeY = T16000HalfRange;
+        RightDev.HalfRangeX = T16000HalfRange;
+        RightDev.HalfRangeZ = T16000HalfRange;
+        RightDev.MinRangeY = T16000AxisRange*DeadZoneCalPerc;
+        RightDev.MinRangeY = T16000AxisRange*DeadZoneCalPerc;
+        RightDev.MinRangeY = T16000AxisRange*DeadZoneCalPerc;
+        RightDev.KeyNegY = PitchUp;
+        RightDev.KeyPosY = PitchDown;
+        RightDev.KeyNegX = RollRight;
+        RightDev.KeyPosX = RollLeft;
+        RightDev.KeyNegZ = YawRight;
+        RightDev.KeyPosZ = YawLeft;
         }
+        
     if (T16000Left == 1){
-        Joy1YValue = T16000L[JOYY]; // Pitch
-        Joy1XValue = T16000L[JOYX]; // Roll
-        Joy1ZValue = T16000L[RUDDER]; // Yaw
-        Joy1HalfRange = T16000HalfRange;
-        MinRange1 = T16000AxisRange*DeadZoneCalPerc;
+        LeftDev.YValue = T16000L[JOYY]; // Throttle
+        LeftDev.XValue = T16000L[JOYX]; // Translate Left/Right
+        LeftDev.ZValue = T16000L[RUDDER];
+        LeftDev.HalfRangeY = T16000HalfRange;
+        LeftDev.HalfRangeX = T16000HalfRange;
+        LeftDev.HalfRangeZ = T16000HalfRange;
+        LeftDev.MinRangeY = T16000AxisRange*DeadZoneCalPerc1;
+        LeftDev.MinRangeX = T16000AxisRange*DeadZoneCalPerc1;
+        LeftDev.MinRangeZ = T16000AxisRange*DeadZoneCalPerc1;
+        LeftDev.KeyNegY = ThrottleUp;
+        LeftDev.KeyPosY = ThrottleDown;
+        LeftDev.KeyNegX = ThrustRight;
+        LeftDev.KeyPosX = ThrustLeft;
+        LeftDev.KeyNegZ = TrimInc;
+        LeftDev.KeyPosZ = TrimDecr;
         }
+        
+    RightDev.LastNegY = -1;
+    RightDev.LastPosY = 1;
+    RightDev.LastNegX = -1;
+    RightDev.LastPosX = 1;
+    RightDev.LastNegZ = -1;
+    RightDev.LastPosZ = 1;
+    
+    LeftDev.LastNegY = -1;
+    LeftDev.LastPosY = 1;
+    LeftDev.LastNegX = -1;
+    LeftDev.LastPosX = 1;
+    LeftDev.LastNegZ = -1;
+    LeftDev.LastPosZ = 1;
     }
 
 int AxisToKey(int DC,short PKey){// Application of Dutycycle call to keypress
@@ -52,77 +126,49 @@ int AxisToKey(int DC,short PKey){// Application of Dutycycle call to keypress
     DeferCall(PWMTimeLenght,&ActKey,LOCK);
     }
 
-int PWMPress (int mag,int range,int array,int pos1,int pos2){// Math to convert Joystick Value to duty cycle in ms of a keypress. Dutycycle time is 100ms
+int PWMPress (int mag,int range,int pos1,int pos2){// Math to convert Joystick Value to duty cycle in ms of a keypress. Dutycycle time is 100ms
     float fduty = 0.0;
     int duty = 0;
     fduty = (abs(mag)/range)*PWMTimeLenght;
     duty = fduty-fduty%1;
     if (mag > 0){
         //printf("PW Mag Cal Axis+: %i, %i \xa",mag,duty);
-        return(DutyGreater(duty,array,pos1));
+        return(DutyGreater(duty,pos1));
         }
     if (mag < 0){
         //printf("PW Mag Cal Axis-: %i, %i \xa",mag,duty);
-        return(DutyLess(duty,array,pos2));
+        return(DutyLess(duty,pos2));
         }
     }
 
-int DutyLess (int duty,int array,int pos){// Math to dampen return to zero values
-    if (array == 0){
-        if (LastJoy1[pos] <= duty){
-            LastJoy1[pos] = duty;
-            //printf("Duty Less Ret: %i \xa",duty);
-            return duty;
-            }
-        else {
-            LastJoy1[pos] = duty;
-            //printf("Duty Less Disc: %i \xa",duty);
-            return 0; 
-            }
+int DutyLess (int duty,int pos){// Math to dampen return to zero values
+    if (pos <= duty){
+        pos = duty;
+        //printf("Duty Less Ret: %i \xa",duty);
+        return duty;
         }
-    if (array == 1){
-        if (LastJoy2[pos] <= duty){
-            LastJoy2[pos] = duty;
-            //printf("Duty Less Ret: %i \xa",duty);
-            return duty;
-            }
-        else {
-            LastJoy2[pos] = duty;
-            //printf("Duty Less Disc: %i \xa",duty);
-            return 0; 
-            }
+    else {
+        pos = duty;
+        //printf("Duty Less Disc: %i \xa",duty);
+        return 0; 
         }
     }
     
-int DutyGreater (int duty,int array,int pos){// Math to dampen return to zero values
-    if (array == 0){
-        if (LastJoy1[pos] >= duty){
-            LastJoy1[pos] = duty;
-            //printf("Duty Greater Ret: %i \xa",duty);
-            return duty;
-            }
-        else{
-            LastJoy1[pos] = duty;
-            //printf("Duty Greater Disc: %i \xa",duty);
-            return 0;
-            }
+int DutyGreater (int duty,int pos){// Math to dampen return to zero values
+    if (pos >= duty){
+        pos = duty;
+        //printf("Duty Greater Ret: %i \xa",duty);
+        return duty;
         }
-    if (array == 1){
-        if (LastJoy2[pos] >= duty){
-            LastJoy2[pos] = duty;
-            //printf("Duty Greater Ret: %i \xa",duty);
-            return duty;
-            }
-        else{
-            LastJoy2[pos] = duty;
-            //printf("Duty Greater Disc: %i \xa",duty);
-            return 0;
-            }
+    else{
+        pos = duty;
+        //printf("Duty Greater Disc: %i \xa",duty);
+        return 0;
         }
     }
     
-int PulseFormer(int axis_value,int range,int array,int pos1,int pos2,word key1,word key2){
-    int onDutyTime = PWMPress(axis_value,range,array,pos1,pos2);
+int PulseFormer(int axis_value,int range,int pos1,int pos2,word key1,word key2){
+    int onDutyTime = PWMPress(axis_value,range,pos1,pos2);
     if (axis_value > 0){
 	   AxisToKey (onDutyTime, key1);
 	   //printf("Point 1+ > %i, %i, %x \xa",axis_value,onDutyTime,key1);
