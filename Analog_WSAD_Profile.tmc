@@ -56,29 +56,24 @@ int EventHandle(int type, alias o, int x)
     
     if (AnalogWASD_Pre_axis == 1){	//Coding needed to make Joystick Axis control a key with a dutycycle 
         AxisToKeySet(); //Call to set Vars for Axis->Key
+                                         
+        if (Joy1YValue < (-MinRange1) | Joy1YValue > MinRange1){PulseFormer(Joy1YValue,Joy1HalfRange,0,0,1,PitchUp,PitchDown);}//Joystick Y axis
+        if (Joy1XValue < (-MinRange1) | Joy1XValue > MinRange1){PulseFormer(Joy1XValue,Joy1HalfRange,0,2,3,RollRight,RollLeft);}//Joystick X axis
         
-        if (Joy1YValue < (-MinRange1) | Joy1YValue > MinRange1){//Joystick Y axis
-            OnDutyTime = PWMPress(Joy1YValue,0,1);
-            if (OnDutyTime > 0){
-	           AxisToKey (OnDutyTime, PitchUp);
-	           //printf("Point 1 > %i, %i \xa",Joy1YValue,OnDutyTime);
-	           }
-            if (OnDutyTime < 0){
-	           AxisToKey (abs(OnDutyTime), PitchDown);
-	           //printf("Point 1 > %i, %i \xa",Joy1YValue,abs(OnDutyTime));
-	           }        
+        if (T16000Right == 1) {
+            if (Joy1ZValue < (-MinRange1) | Joy1ZValue > MinRange1){PulseFormer(Joy1ZValue,Joy1HalfRange,0,4,5,YawRight,YawLeft);}//Joystick Z axis
+            }
+        
+        if (WarthogThrottle == 1){
+            if (Joy2YValue < (-MinRange2) | Joy2YValue > MinRange2){PulseFormer(Joy2YValue,Joy2HalfRange,1,0,1,ThrottleUp,ThrottleDown);}//A10 Throttle Y axis
+            if (Joy2XValue < (-MinRange2) | Joy2XValue > MinRange2){PulseFormer(Joy2XValue,Joy2HalfRange,1,2,3,AltThrottleUp,AltThrottleDown);}//A10 Throttle X Axis
+            if (Joy2ZValue < (-MinRange2) | Joy2ZValue > MinRange2){PulseFormer(Joy2ZValue,Joy2HalfRange,1,2,3,TrimInc,TrimDecr);}//A10 Throttle Z Axis
             }
             
-        if (Joy1XValue < (-MinRange1) | Joy1XValue > MinRange1){//Joystick X axis
-            OnDutyTime = PWMPress(Joy1XValue,3,4);
-            if (OnDutyTime > 0){
-	           AxisToKey (OnDutyTime, RollRight);
-	           //printf("Point 1 > %i, %i \xa",Joy1XValue,OnDutyTime);
-	           }
-            if (OnDutyTime < 0){
-	           AxisToKey (abs(OnDutyTime), RollLeft);
-	           //printf("Point 1 > %i, %i \xa",Joy1XValue,OnDutyTime);
-	           }        
+        if (T16000Left == 1){
+            if (Joy2YValue < (-MinRange2) | Joy2YValue > MinRange2){PulseFormer(Joy2YValue,Joy2HalfRange,0,0,1,ThrottleUp,ThrottleDown);}//Joystick Y axis
+            if (Joy2XValue < (-MinRange2) | Joy2XValue > MinRange2){PulseFormer(Joy2XValue,Joy2HalfRange,0,2,3,TranslateRight,TranslateLeft);}//Joystick X axis
+            if (Joy2ZValue < (-MinRange2) | Joy2ZValue > MinRange2){PulseFormer(Joy2ZValue,Joy2HalfRange,0,4,5,ThrustUp,ThrustDown);}//Joystick Z axis
             }
         }
     }

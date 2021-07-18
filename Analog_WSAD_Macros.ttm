@@ -119,17 +119,16 @@ int SettingError(char side){
     printf("Once done save and re-run the script.\xa");
     printf("\xa");
     printf("--------------------------- End Error ---------------------------\xa");
+    Abort();
     }
    
 int WarthogJoyBinds(){//Keybindings for the Warthog Joysick key assignments.
     MapKeyIOUMD(&Joystick,TG1,0,0,0,0,0,0);
     MapKeyIOUMD(&Joystick,TG2,0,0,0,0,0,0);
-    MapKeyIOUMD(&Joystick,S1,Vector,Vector,Vector,Vector,Vector,Vector);
-    MapKeyIOUMD(&Joystick,S2,L_CTL+'l',L_CTL+'l',L_CTL+'l',L_CTL+'l',L_CTL+'l',L_CTL+'l');
-    //MapKeyIOUMD(&Joystick,S3,0,0,0,0,0,0);
-    MapKey(&Joystick,S3,CHAIN(PULSE+'a',D(4000),PULSE+'b'));
-    //MapKeyIOUMD(&Joystick,S4,0,0,0,0,0,0);
-    MapKey(&Joystick,S4,EXEC("AxisToKey(100,1);"));
+    MapKeyIOUMD(&Joystick,S1,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,S2,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,S3,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,S4,0,0,0,0,0,0);
     MapKeyIOUMD(&Joystick,H1U,0,0,0,0,0,0);
     MapKeyIOUMD(&Joystick,H1D,0,0,0,0,0,0);
     MapKeyIOUMD(&Joystick,H1L,0,0,0,0,0,0);
@@ -154,6 +153,7 @@ int WarthogThrottleBinds(){//Keybindings for the Warthog Throttle key assignment
     MapKeyIOUMD(&Throttle,SPDF,Brakes,Brakes,Brakes,Brakes,Brakes,Brakes);
     MapKeyIOUMD(&Throttle,SPDM,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle,SPDB,Brakes,Brakes,Brakes,Brakes,Brakes,Brakes);
+    
     printf("---Warthog Throttle Binds Loaded.\xa \xa");    
     }
 

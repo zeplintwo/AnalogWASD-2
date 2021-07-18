@@ -3,14 +3,12 @@
 // MACRO VARIABLE INITALISATION
 //---------------------------------------------------------------------------
 
-int     OnDutyTime          = 0;
-
 //----------
 // Arrays
 //----------
 
 int     LastJoy1[]           = {-1,0,-1,0,-1,0}; //pos 0 joy1y negative,pos 1 joy1y positve, pos 2 Joy1x negative, pos 3 joy1x positive, pos 4 joy1z negative, pos 5 joy1z positve
-
+int     LastJoy2[]           = {-1,0,-1,0,-1,0}; //pos 0 joy1y negative,pos 1 joy1y positve, pos 2 Joy1x negative, pos 3 joy1x positive, pos 4 joy1z negative, pos 5 joy1z positve
 //---------------------------------------------------------------------------
 // CUSTOM FUNCTIONS
 //---------------------------------------------------------------------------
@@ -20,7 +18,7 @@ int AxisToKeySet(){
         Joy1YValue = Joystick[JOYY];// Pitch
         Joy1XValue = Joystick[JOYX];// Roll
         Joy1HalfRange = A10JoyHalfRange;
-        MinRange1 = A10JoyAxisRange*DeadZoneCalPerc;
+        MinRange1 = A10JoyAxisRange*DeadZoneCalPerc1;
         }
     if (WarthogThrottle == 1){
         //Mouse2XValue = Throttle[SCX];// Mouse up/down
@@ -29,7 +27,7 @@ int AxisToKeySet(){
         Joy2XValue = Throttle[THR_LEFT];
         Joy2ZValue = Throttle[THR_FC];
         Joy2HalfRange = A10JoyAxisRange;
-        MinRange2 = A10JoyAxisRange*DeadZoneCalPerc;
+        MinRange2 = A10JoyAxisRange*DeadZoneCalPerc2;
         }
     if (T16000Right == 1){
         Joy1YValue = T16000[JOYY]; // Pitch
@@ -50,48 +48,87 @@ int AxisToKeySet(){
 int AxisToKey(int DC,short PKey){// Application of Dutycycle call to keypress
     ActKey(LOCK+KEYON+PKey);
     DeferCall((DC+TouchDelay),&ActKey,PKey);
-    //printf("Duty Cycle : %i \xa",DC);
-    //DeferCall(PWMTimeLenght,&ActKey,LOCK);
+    //printf("Duty Cycle : %i ,%c \xa",DC,PKey);
+    DeferCall(PWMTimeLenght,&ActKey,LOCK);
     }
 
-int PWMPress (int mag,int pos1,int pos2){// Math to convert Joystick Value to duty cycle in ms of a keypress. Dutycycle time is 100ms
+int PWMPress (int mag,int range,int array,int pos1,int pos2){// Math to convert Joystick Value to duty cycle in ms of a keypress. Dutycycle time is 100ms
     float fduty = 0.0;
     int duty = 0;
-    fduty = (abs(mag)/Joy1HalfRange)*PWMTimeLenght;
+    fduty = (abs(mag)/range)*PWMTimeLenght;
     duty = fduty-fduty%1;
     if (mag > 0){
-        //printf("PW Mag Cal Y+: %i, %i \xa",mag,duty);
-        return(DutyGreater(duty,pos1));
+        //printf("PW Mag Cal Axis+: %i, %i \xa",mag,duty);
+        return(DutyGreater(duty,array,pos1));
         }
     if (mag < 0){
-        //printf("PW Mag Cal Y-: %i, %i \xa",mag,duty);
-        return(DutyLess(duty,pos2));
+        //printf("PW Mag Cal Axis-: %i, %i \xa",mag,duty);
+        return(DutyLess(duty,array,pos2));
         }
     }
 
-int DutyLess (int duty,int pos){// Math to dampen return to zero values
-    if (LastJoy1[pos] <= duty){
-        LastJoy1[pos] = duty;
-        //printf("Duty Less Ret: %i \xa",duty);
-        return duty;
+int DutyLess (int duty,int array,int pos){// Math to dampen return to zero values
+    if (array == 0){
+        if (LastJoy1[pos] <= duty){
+            LastJoy1[pos] = duty;
+            //printf("Duty Less Ret: %i \xa",duty);
+            return duty;
+            }
+        else {
+            LastJoy1[pos] = duty;
+            //printf("Duty Less Disc: %i \xa",duty);
+            return 0; 
+            }
         }
-    else {
-        LastJoy1[pos] = duty;
-        //printf("Duty Less Disc: %i \xa",duty);
-        return 0; 
+    if (array == 1){
+        if (LastJoy2[pos] <= duty){
+            LastJoy2[pos] = duty;
+            //printf("Duty Less Ret: %i \xa",duty);
+            return duty;
+            }
+        else {
+            LastJoy2[pos] = duty;
+            //printf("Duty Less Disc: %i \xa",duty);
+            return 0; 
+            }
         }
-   
     }
     
-int DutyGreater (int duty,int pos){// Math to dampen return to zero values
-    if (LastJoy1[pos] >= duty){
-        LastJoy1[pos] = duty;
-        //printf("Duty Greater Ret: %i \xa",duty);
-        return duty;
+int DutyGreater (int duty,int array,int pos){// Math to dampen return to zero values
+    if (array == 0){
+        if (LastJoy1[pos] >= duty){
+            LastJoy1[pos] = duty;
+            //printf("Duty Greater Ret: %i \xa",duty);
+            return duty;
+            }
+        else{
+            LastJoy1[pos] = duty;
+            //printf("Duty Greater Disc: %i \xa",duty);
+            return 0;
+            }
         }
-    else{
-        LastJoy1[pos] = duty;
-        //printf("Duty Greater Disc: %i \xa",duty);
-        return 0;
+    if (array == 1){
+        if (LastJoy2[pos] >= duty){
+            LastJoy2[pos] = duty;
+            //printf("Duty Greater Ret: %i \xa",duty);
+            return duty;
+            }
+        else{
+            LastJoy2[pos] = duty;
+            //printf("Duty Greater Disc: %i \xa",duty);
+            return 0;
+            }
         }
+    }
+    
+int PulseFormer(int axis_value,int range,int array,int pos1,int pos2,word key1,word key2){
+    int onDutyTime = PWMPress(axis_value,range,array,pos1,pos2);
+    if (axis_value > 0){
+	   AxisToKey (onDutyTime, key1);
+	   //printf("Point 1+ > %i, %i, %x \xa",axis_value,onDutyTime,key1);
+	   }
+    if (axis_value < 0){
+	   AxisToKey (abs(onDutyTime), key2);
+	   //printf("Point 1- > %i, %i, %x \xa",axis_value,abs(onDutyTime),key2);
+	   }        
     }

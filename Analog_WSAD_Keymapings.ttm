@@ -7,18 +7,23 @@
 //  KEYBIND SHOULD NOT BE CHANGED UNLESS YOU RUN A NON-STANDARD LAYOUT. IE YOU CHANGE THE DEFAULT KEYBOARD BINDS
 //
 //---------------------------------------------------------------------------
-define ThrottleUp       USB[0x15]  //r throttle step up
-define ThrottleDown     USB[0x17]  //t throttle step down
-define PitchDown        USB[0x16]  //s pitch down, nose down
-define PitchUp          USB[0x1A]  //w pitch up, nose up
-define RollRight        USB[0x07]  //d roll right, roll clockwise
-define RollLeft         USB[0x04]  //a roll left, roll anti-clockwise
-define YawRight         USB[0x08]  //e yaw right, nose right
-define YawLeft          USB[0x14]  //q yaw left, nose left
-define ThrustUp         USB[0x2c]  //space accend, thrust upward 
-define ThrustDown       USB[0x07]  //c decend, thrust DOWN
-define Brakes           USB[0xE0]  //left control/ctrl brakes, stoping thrust, aero brakes, retro thrust
-define Vector           USB[0x1B]  //x toggle though vector trajectorys
+define ThrottleUp       USB[0x57]   //numpad + throttle step up
+define AltThrottleUp    USB[0x55]   //numpad * alternate throttle step up
+define ThrottleDown     USB[0x56]   //numpad - throttle step down
+define AltThrottleDown  USB[0x54]   //numpad / alternate throttle step down
+define TrimInc          USB[0x59]   //numpad 1 trim increase step up
+define TrimDecr         USB[0x5A]   //numpad 2 trim decrease step down
+define PitchDown        USB[0x16]   //s pitch down, nose down
+define PitchUp          USB[0x1A]   //w pitch up, nose up
+define RollRight        USB[0x07]   //d roll right, roll clockwise
+define RollLeft         USB[0x04]   //a roll left, roll anti-clockwise
+define YawRight         USB[0x08]   //e yaw right, nose right
+define YawLeft          USB[0x14]   //q yaw left, nose left
+define ThrustUp         USB[0x52]   //up arrow translate, accend, stafe thrust up
+define ThrustDown       USB[0x51]   //down arrow translate, decend, thrust down
+define ThrustRight      USB[0x4F]   //right arrow translate, strafe,thrust right
+define ThrustLeft       USB[0x50]   //left arrow translate, strafe,thrust left
+define Brakes           USB[0xE0]   //left control/ctrl brakes, stoping thrust, aero brakes, retro thrust
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // REFERENCE: USB KEY DEFINITIONS //																															//
