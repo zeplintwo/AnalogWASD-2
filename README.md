@@ -19,3 +19,14 @@ I am posting for the simple reason I am looking to show the code to get help wit
 
 ** Limitations Found **
 The devices must have constant input from devices to trigger PWM. Working on finding some way to integrate a timed latch where every ~150ms it will pole for states. 
+
+---
+## Thrustmaster links to TARGET Software
+
+Thrustmaster US website: http://www.thrustmaster.com/en_US
+Thrustmaster US support: http://www.thrustmaster.com/en_US/support
+Thrustmaster US Warthog HOTAS downloads: https://support.thrustmaster.com/en/product/hotaswarthog-en/\
+Thrustmaster US FTRP downloads: https://support.thrustmaster.com/en/product/tfrp-en/  
+Target software found in download link above under software as of this writing on March 12, 2020 the file name was T.A.R.G.E.T.-Software v3.0.18.328 v2. There is no direct link I can give. The version number will change in the future.
+
+---
