@@ -26,16 +26,21 @@ This system was designed with flight in mind for Starbase. But this system can b
 ---
 
 ## Hardware
-Required hardware:  
+### Required hardware:  
 Thrustmaster (TM) Warthog HOTAS – Throttle and Joystick
+
 or
+
 ThrustMaster (TM) T.16000M FCS Space Sim Duo
 
-Could work but I don't have to do the testing on the hardware:
+### Could work but I don't have to do the testing on the hardware:
 
 ThrustMaster (TM) T.16000M FCM Flight Pack
+
 TWCS Throttle
+
 TPR Rudder
+
 TCA Officer Pack Airbus Edition and its throttles or single stick
 
 ---
@@ -43,11 +48,11 @@ TCA Officer Pack Airbus Edition and its throttles or single stick
 
 ## Thrustmaster links to TARGET Software
 
-Thrustmaster US website: http://www.thrustmaster.com/en_US
-Thrustmaster US support: http://www.thrustmaster.com/en_US/support
-Thrustmaster US Warthog HOTAS downloads: https://support.thrustmaster.com/en/product/hotaswarthog-en/\
-Thrustmaster US FTRP downloads: https://support.thrustmaster.com/en/product/tfrp-en/  
-Target software found in download link above under software as of this writing on March 12, 2020 the file name was T.A.R.G.E.T.-Software v3.0.18.328 v2. There is no direct link I can give. The version number will change in the future.
+* Thrustmaster US website: http://www.thrustmaster.com/en_US
+* Thrustmaster US support: http://www.thrustmaster.com/en_US/support
+* Thrustmaster US Warthog HOTAS downloads: https://support.thrustmaster.com/en/product/hotaswarthog-en/\
+* Thrustmaster US FTRP downloads: https://support.thrustmaster.com/en/product/tfrp-en/  
+* Target software found in download link above under software as of this writing on July 18, 2021 the file name was T.A.R.G.E.T.-Software v3.0.18.328 . There is no direct link I can give. The version number will change in the future.
 
 ---
 ## Installation:
