@@ -38,7 +38,7 @@ short   JSZoom[]            =   {0,0,-2};           //{Progresive,Flat,Percision
 // You must have WarthogStick or T16000Stick in the On (1) postion and the other Off (0).
 
     int WarthogStick    = 1;    //Default 1
-    int WarthogThrottle = 0;    //Default 1
+    int WarthogThrottle = 1;    //Default 1
 
 // T16000.M Thrustmaster as right stick
 //
@@ -47,7 +47,7 @@ short   JSZoom[]            =   {0,0,-2};           //{Progresive,Flat,Percision
 // You must have WarthogStick or T16000Stick in the On (1) postion and the other Off (0).
 
     int T16000Right = 0;        //Default 0
-    int T16000Left  = 1;        //Default 0
+    int T16000Left  = 0;        //Default 0
 
 // Keyboard emulation of control azis
 //

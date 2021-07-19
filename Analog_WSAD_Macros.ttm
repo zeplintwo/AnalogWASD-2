@@ -185,10 +185,10 @@ int WarthogThrottleBinds(){//Keybindings for the Warthog Throttle key assignment
     MapKeyIOUMD(&Throttle, IDLELON,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, EOLIGN,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, EORIGN,0,0,0,0,0,0);
-    MapKeyIOUMD(&Throttle, CSU,0,0,0,0,0,0);
-    MapKeyIOUMD(&Throttle, CSR,0,0,0,0,0,0);
-    MapKeyIOUMD(&Throttle, CSD,0,0,0,0,0,0);
-    MapKeyIOUMD(&Throttle, CSL,0,0,0,0,0,0);
+    MapKey(&Throttle, CSU,ThrustUp);
+    MapKey(&Throttle, CSR,ThrustRight);
+    MapKey(&Throttle, CSD,ThrustDown);
+    MapKey(&Throttle, CSL,ThrustLeft);
     MapKeyIOUMD(&Throttle, EFLOVER,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, EFROVER,0,0,0,0,0,0);
     //MapKeyIOUMD(&Throttle, APUOFF,0,0,0,0,0,0); // Reserved for Analog WASD functaionality
