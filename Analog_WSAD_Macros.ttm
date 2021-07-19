@@ -54,9 +54,9 @@ int JoyA10Set(){
     //Warthog Joystick Curves
 	SetSCurve(&Joystick, JOYX, 0,JSDeadZone,0,(JSCurve[JSProfile]/2),JSZoom[JSProfile]);
 	SetSCurve(&Joystick, JOYY, 0,JSDeadZone,0,(JSCurve[JSProfile]/2),JSZoom[JSProfile]);
-	printf("---Warthog Joystick Curves Set \xa") ;
+	printf("---Warthog Joystick Curves Set \xa");
 	WarthogJoyBinds();
-	}    
+	}  
     
 int ThrA10Set(){
     MapAxis(&Throttle, SCX, MOUSE_X_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
@@ -86,7 +86,7 @@ int JoyT16Set(){ //Dual T16000.m Curves
         printf("---T16000.m Left Joystick Curves Set \xa") ;
         T16LeftBinds();
         }
-    if (T16000Right == 0 ){
+    if (T16000Right == 1 ){
         MapAxis(&T16000, JOYX, DX_X_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
         MapAxis(&T16000, JOYY, DX_Y_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
         MapAxis(&T16000, RUDDER, DX_Z_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
