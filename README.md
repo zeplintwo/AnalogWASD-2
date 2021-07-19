@@ -1,26 +1,46 @@
-# Analog_WASD
-**---------- WIP ----------**
+# Zeplins Analog WASD add Thrusmaster TARGET to your game.
   
   TARGET scripting software to PWM HOTAS inputs into Duty Cycle timed keypresses.
-  
-**---------- WIP ----------**
 
 This is the first public release of a PWM keypress system for a joystick axis of rotation. 
 
 The idea was that I wanted a block of time (currently at 100ms can be change in script) to represent the range of motion from center to the max value of an axis. With a minimum buffer of a keypress to make sure that all input is properly executed (current set a 25ms can be change in script). 
-This was not a simple task as I have been though no less than 5 code designs. And this current design while works I am not totally satisfied with it is build. 
-I only have the conversion working for a single stick on the Thrustmaster Warthog HOTAS. 
+This was not a simple task as I have been though no less than 5 code designs. This is a very close to finished script base. The basic functions all work and polling  for values and PWM cycles work on 100ms as default you can increase or decrese it but it can cause issues. As most games and/or windows discard any keypress less than 10-25ms.
 
-**WIP**
+## **WIP**
 
-*But have built in the ability to use the T16000.m Dual sticks (NO TESTING OF T1600.M HAS BEEN DONE). *
+* I have built in the ability to use the T16000.m Dual sticks (NO TESTING OF T1600.M HAS BEEN DONE YET).
+* Build a default keymap for flight controls. 
+* Build referance PDF's for flight control functions.
+* TM T.Flight Rudder Pedals (TFRP) - in Flight Mode
+* Planned features:
+	1. Switchable throttle maps
+	2. Switchable Joystick maps
+	3. Internal comm switch and external coms switch or both toggle with visual.
+	4. Posable TrackIR/FaceTrack controls
+	6. Posable VoiceCommand intgrations
+	5. More to come as Starbase comes out
 
-I am posting for the simple reason I am looking to show the code to get help with some questions that I have not been able to answer from my limited programing knowledge. But, with the limited C++ Code base that TARGET has not sure if these ideas will work. 
-
-** Limitations Found **
-The devices must have constant input from devices to trigger PWM. Working on finding some way to integrate a timed latch where every ~150ms it will pole for states. 
+This system was designed with flight in mind for Starbase. But this system can be addapted to almost any game. Some functions will take more 'magic' to intergrate but TARGET has a high degree of coustamizablity. As this script can attribute to.
 
 ---
+
+## Hardware
+Required hardware:  
+Thrustmaster (TM) Warthog HOTAS – Throttle and Joystick
+or
+ThrustMaster (TM) T.16000M FCS Space Sim Duo
+
+Could work but I don't have to do the testing on the hardware:
+
+ThrustMaster (TM) T.16000M FCM Flight Pack
+TWCS Throttle
+TPR Rudder
+TCA Officer Pack Airbus Edition and its throttles or single stick
+
+---
+
+
 ## Thrustmaster links to TARGET Software
 
 Thrustmaster US website: http://www.thrustmaster.com/en_US

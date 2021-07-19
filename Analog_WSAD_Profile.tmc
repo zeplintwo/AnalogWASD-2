@@ -28,8 +28,7 @@ include "Analog_WSAD_User_Settings.ttm"             //User editable setting for 
 include "Analog_WSAD_Pre-Axis_Macros.ttm"           //macros for the Axis to Key with a dutycycle logic
 
 //program startup
-int main()
-{
+int main(){
     //following lines turn off other thrustmaster stick
     Configure(&HCougar, MODE_EXCLUDED);
     Configure(&JoystickF18, MODE_EXCLUDED);
@@ -37,7 +36,8 @@ int main()
 	Configure(&RMFD, MODE_EXCLUDED);
 	Configure(&TFRPRudder, MODE_EXCLUDED);
 	Configure(&TWCSThrottle, MODE_EXCLUDED);
-	Configure(&TFRPHARudder, MODE_EXCLUDED);	
+	Configure(&TFRPHARudder, MODE_EXCLUDED);
+	
 	//end of exclustions
 	
 	if(Init(&EventHandle)) return 1; // declare the event handler, return on error
@@ -45,51 +45,16 @@ int main()
 	SetKBLayout(KB_ENG);
 	
     ControlAxisCurveSetup();
-}
+    initLEDController();
+    
+    if (AnalogWASD_Pre_axis == 1){ //Coding needed to make Joystick Axis control a key with a dutycycle 
+        MainPWMStart();
+        }     
+    }
 
 //event handler
 int EventHandle(int type, alias o, int x){       
     DefaultMapping(&o, x);
-	//add event handling code here
-    
-    if (AnalogWASD_Pre_axis == 1){	//Coding needed to make Joystick Axis control a key with a dutycycle 
-        AxisToKeySet(); //Call to set Vars for Axis->Key
-        
-        if (RightDev.YValue < (-RightDev.MinRangeY) | RightDev.YValue > RightDev.MinRangeY){ //Joystick Y axis
-            PulseFormer(RightDev.YValue,RightDev.HalfRangeY,RightDev.LastNegY,RightDev.LastPosY,RightDev.KeyNegY,RightDev.KeyPosY);
-            }
-        if (RightDev.XValue < (-RightDev.MinRangeX) | RightDev.XValue > RightDev.MinRangeX){ //Joystick X axis
-            PulseFormer(RightDev.XValue,RightDev.HalfRangeX,RightDev.LastNegX,RightDev.LastPosX,RightDev.KeyNegX,RightDev.KeyPosX);
-            }
-        
-        if (T16000Right == 1) { //T16000.m Extra axis for Yaw controle
-            if (RightDev.ZValue < (-RightDev.MinRangeZ) | RightDev.ZValue > RightDev.MinRangeZ){ //Joystick Z axis
-                PulseFormer(RightDev.ZValue,RightDev.HalfRangeZ,RightDev.LastNegZ,RightDev.LastPosZ,RightDev.KeyNegZ,RightDev.KeyPosZ);
-                }
-            }
-        
-        if (WarthogThrottle == 1){
-            if (LeftDev.YValue < (-LeftDev.MinRangeY) | LeftDev.YValue > LeftDev.MinRangeY){ //A10 Throttle Y axis
-                PulseFormer(LeftDev.YValue,LeftDev.HalfRangeY,LeftDev.LastNegY,LeftDev.LastPosY,LeftDev.KeyNegY,LeftDev.KeyPosY);
-            }
-            if (LeftDev.XValue < (-LeftDev.MinRangeX) | LeftDev.XValue > LeftDev.MinRangeX){ //A10 Throttle X Axis
-                PulseFormer(LeftDev.XValue,LeftDev.HalfRangeX,LeftDev.LastNegX,LeftDev.LastPosX,LeftDev.KeyNegX,LeftDev.KeyPosX);
-                }
-            if (LeftDev.ZValue < (-LeftDev.MinRangeZ) | LeftDev.ZValue > LeftDev.MinRangeZ){ //A10 Throttle Z Axis
-                PulseFormer(LeftDev.ZValue,LeftDev.HalfRangeZ,LeftDev.LastNegZ,LeftDev.LastPosZ,LeftDev.KeyNegZ,LeftDev.KeyPosZ);
-                }
-            }
-            
-        if (T16000Left == 1){
-            if (LeftDev.YValue < (-LeftDev.MinRangeY) | LeftDev.YValue > LeftDev.MinRangeY){ //Joystick Y axis
-                PulseFormer(LeftDev.YValue,LeftDev.HalfRangeY,LeftDev.LastNegY,LeftDev.LastPosY,LeftDev.KeyNegY,LeftDev.KeyPosY);
-                }
-            if (LeftDev.XValue < (-LeftDev.MinRangeX) | LeftDev.XValue > LeftDev.MinRangeX){ //Joystick X axis
-                PulseFormer(LeftDev.XValue,LeftDev.HalfRangeX,LeftDev.LastNegX,LeftDev.LastPosX,LeftDev.KeyNegX,LeftDev.KeyPosX);
-                }
-            if (LeftDev.ZValue < (-LeftDev.MinRangeZ) | LeftDev.ZValue > LeftDev.MinRangeZ){ //Joystick Z axis
-                PulseFormer(LeftDev.ZValue,LeftDev.HalfRangeZ,LeftDev.LastNegZ,LeftDev.LastPosZ,LeftDev.KeyNegZ,LeftDev.KeyPosZ);
-                }
-            }
-        }
+	//add event handling code here   
     }
+    

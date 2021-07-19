@@ -152,8 +152,58 @@ int WarthogJoyBinds(){//Keybindings for the Warthog Joysick key assignments.
 int WarthogThrottleBinds(){//Keybindings for the Warthog Throttle key assignments.
     MapKeyIOUMD(&Throttle,SPDF,Brakes,Brakes,Brakes,Brakes,Brakes,Brakes);
     MapKeyIOUMD(&Throttle,SPDM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle,SPDB,Brakes,Brakes,Brakes,Brakes,Brakes,Brakes);   
+    MapKeyIOUMD(&Throttle, MSP,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, MSU,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, MSR,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, MSD,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, MSL,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle,SPDF,Brakes,Brakes,Brakes,Brakes,Brakes,Brakes);
+    MapKeyIOUMD(&Throttle,SPDM,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle,SPDB,Brakes,Brakes,Brakes,Brakes,Brakes,Brakes);
-    
+    MapKeyIOUMD(&Throttle, BSF,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, BSB,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, CHF,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, CHB,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, PSF,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, PSB,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, LTB,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EFLNORM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EFRNORM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EOLMOTOR,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EORMOTOR,0,0,0,0,0,0);
+    //MapKeyIOUMD(&Throttle, APUON,0,0,0,0,0,0); // Reserved for Analog WASD functaionality
+    MapKeyIOUMD(&Throttle, LDGH,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, FLAPU,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, FLAPD,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EACON,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, RDRNRM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, APENG,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, APPAT,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, APALT,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, IDLERON,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, IDLELON,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EOLIGN,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EORIGN,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, CSU,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, CSR,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, CSD,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, CSL,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EFLOVER,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EFROVER,0,0,0,0,0,0);
+    //MapKeyIOUMD(&Throttle, APUOFF,0,0,0,0,0,0); // Reserved for Analog WASD functaionality
+    MapKeyIOUMD(&Throttle, EACOFF,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, RDRDIS,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, APDIS,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, IDLEROFF,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, IDLELOFF,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EOLNORM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EORNORM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, FLAPM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, BSM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, CHM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, PSM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, APAH,0,0,0,0,0,0);        
     printf("---Warthog Throttle Binds Loaded.\xa \xa");    
     }
 
@@ -165,3 +215,12 @@ int T16RightBinds(){
     printf("---T16000.m Right Binds Loaded.\xa \xa");    
     }
     
+int initLEDController(){
+	ActKey(PULSE+KEYON+LED(&Throttle, LED_INTENSITY, 255)); // Initiate LED status below
+	ActKey(PULSE+KEYON+LED(&Throttle, LED_INTENSITY, 129)); // Set backlight for Throttle
+	ActKey(KEYON+PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-LED1)); // Analog WASD Function
+	ActKey(KEYON+PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-LED2));
+    ActKey(KEYON+PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-LED3));
+	ActKey(KEYON+PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-LED4));
+	ActKey(KEYON+PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-LED5));
+    }
