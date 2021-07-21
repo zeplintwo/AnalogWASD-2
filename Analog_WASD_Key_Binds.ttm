@@ -1,4 +1,4 @@
-// Part of Analog_WSAD_Profile#.# keybinds packages
+// Part of Analog_WASD_Profile#.# keybinds packages
 //---------------------------------------------------------------------------
 //
 // Default keymaps from Dual Universe these may or may not dircectly be used but are are for referance and will be use where posable to keep future change compatable.
@@ -7,6 +7,7 @@
 //  KEYBIND SHOULD NOT BE CHANGED UNLESS YOU RUN A NON-STANDARD LAYOUT. IE YOU CHANGE THE DEFAULT KEYBOARD BINDS
 //
 //---------------------------------------------------------------------------
+
 define ThrottleUp       USB[0x57]   //numpad + throttle step up
 define AltThrottleUp    USB[0x55]   //numpad * alternate throttle step up
 define ThrottleDown     USB[0x56]   //numpad - throttle step down
@@ -23,9 +24,9 @@ define ThrustUp         USB[0x52]   //up arrow translate, accend, stafe thrust u
 define ThrustDown       USB[0x51]   //down arrow translate, decend, thrust down
 define ThrustRight      USB[0x4F]   //right arrow translate, strafe,thrust right
 define ThrustLeft       USB[0x50]   //left arrow translate, strafe,thrust left
-define Brakes           USB[0xE0]   //left control/ctrl brakes, stoping thrust, aero brakes, retro thrust
-define ExtComms         USB[0x48]   //Pause/Break for external Comms
-define IntComms         USB[0x48]   //Scroll Lock for internal Comms
+define Brakes           USB[0xE0]   //left control/ctrl brakes, stoping thrust, aero brakes, retro thrust, reverse
+define ExtVoice         USB[0x48]   //Pause/Break for external Comms
+define IntVoice         USB[0x48]   //Scroll Lock for internal Comms
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // REFERENCE: USB KEY DEFINITIONS //																															//

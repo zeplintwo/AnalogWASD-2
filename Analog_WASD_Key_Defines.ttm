@@ -1,0 +1,94 @@
+// Part of Analog_WASD_Profile#.# keybinds packages
+//---------------------------------------------------------------------------
+//              KEYBINDS FOR ALL SUPPORTED DEVICES
+//---------------------------------------------------------------------------
+
+int WarthogJoyBinds(){//Keybindings for the Warthog Joysick key assignments.
+    MapKeyIOUMD(&Joystick,TG1,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,TG2,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,S1,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,S2,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,S3,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,S4,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H1U,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H1D,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H1L,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H1R,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H2U,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H2D,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H2L,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H2R,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H3U,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H3D,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H3L,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H3R,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H4U,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H4D,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H4L,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H4R,0,0,0,0,0,0);
+    MapKeyIOUMD(&Joystick,H4P,0,0,0,0,0,0);
+    printf("---Warthog Joystick Binds Loaded.\xa \xa");
+    }
+
+int WarthogThrottleBinds(){//Keybindings for the Warthog Throttle key assignments.   
+    MapKeyIOUMD(&Throttle, MSP,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, MSU,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, MSR,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, MSD,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, MSL,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, SPDF,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, SPDM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, SPDB,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, BSF,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, BSB,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, CHF,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, CHB,0,0,0,0,0,0);
+    MapKey(&Throttle,PSF,EXEC("ExtComms();"));
+	MapKey(&Throttle,PSM,EXEC("IntComms();"));
+	MapKey(&Throttle,PSB,EXEC("BothComms();"));
+    MapKeyIOUMD(&Throttle, LTB,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EFLNORM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EFRNORM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EOLMOTOR,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EORMOTOR,0,0,0,0,0,0);
+    //MapKeyIOUMD(&Throttle, APUON,0,0,0,0,0,0); // Reserved for Analog WASD functaionality
+    MapKeyIOUMD(&Throttle, LDGH,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, FLAPU,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, FLAPD,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EACON,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, RDRNRM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, APENG,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, APPAT,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, APALT,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, IDLERON,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, IDLELON,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EOLIGN,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EORIGN,0,0,0,0,0,0);
+    MapKey(&Throttle, CSU,ThrustUp);
+    MapKey(&Throttle, CSR,ThrustRight);
+    MapKey(&Throttle, CSD,ThrustDown);
+    MapKey(&Throttle, CSL,ThrustLeft);
+    MapKeyIOUMD(&Throttle, EFLOVER,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EFROVER,0,0,0,0,0,0);
+    //MapKeyIOUMD(&Throttle, APUOFF,0,0,0,0,0,0); // Reserved for Analog WASD functaionality
+    MapKeyIOUMD(&Throttle, EACOFF,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, RDRDIS,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, APDIS,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, IDLEROFF,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, IDLELOFF,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EOLNORM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, EORNORM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, FLAPM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, BSM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, CHM,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, APAH,0,0,0,0,0,0);        
+    printf("---Warthog Throttle Binds Loaded.\xa \xa");    
+    }
+
+int T16LeftBinds(){
+    printf("---T16000.m Left Binds Loaded.\xa \xa");    
+    }
+    
+int T16RightBinds(){
+    printf("---T16000.m Right Binds Loaded.\xa \xa");    
+    }

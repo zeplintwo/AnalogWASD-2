@@ -1,6 +1,6 @@
-// Part of Analog_WSAD_Profile#.# keybinds packages
+// Part of Analog_WASD_Profile#.# keybinds packages
 //---------------------------------------------------------------------------
-// MACRO VARIABLE INITALISATION
+//              VARIABLE INITALISATION
 //---------------------------------------------------------------------------
 
 struct JoyDevice{
@@ -25,14 +25,20 @@ struct JoyDevice{
     word KeyPosX; //Keypress storage for X axis postive values
     word KeyNegZ; //Keypress storage for Z axis negative values
     word KeyPosZ; //Keypress storage for Z axis postive values
-    };
+};
     
 JoyDevice RightDev;
 JoyDevice LeftDev;
 
 //---------------------------------------------------------------------------
-// CUSTOM FUNCTIONS
+//              WSAD Functions
 //---------------------------------------------------------------------------
+
+int MainPWMStart(){
+    AxisToKeySet(); // Set Device to variable calls
+    MapKey(&Throttle,APUON,CHAIN(REXEC(0,100,"PWMLogic();"),PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT+LED1))); // 100ms calls for the devices and turn on LED 1 for visual cue of activity
+    MapKey(&Throttle,APUOFF,CHAIN(EXEC("StopAutoRepeat(0);"),PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-LED1))); // kills 100ms calls to devices and turns off LED 1
+}
 
 int AxisToKeySet(){
     if (WarthogStick == 1){
@@ -46,7 +52,7 @@ int AxisToKeySet(){
         RightDev.KeyPosY = PitchDown;
         RightDev.KeyNegX = RollRight;
         RightDev.KeyPosX = RollLeft;
-        }
+    }
         
     if (WarthogThrottle == 1){
         //Mouse2XValue = Throttle[SCX]; // Mouse up/down
@@ -66,7 +72,7 @@ int AxisToKeySet(){
         LeftDev.KeyPosX = AltThrottleDown;
         LeftDev.KeyNegZ = TrimInc;
         LeftDev.KeyPosZ = TrimDecr;
-        }
+    }
         
     if (T16000Right == 1){
         RightDev.YValue = T16000[JOYY]; // Pitch
@@ -84,7 +90,7 @@ int AxisToKeySet(){
         RightDev.KeyPosX = RollLeft;
         RightDev.KeyNegZ = YawRight;
         RightDev.KeyPosZ = YawLeft;
-        }
+    }
         
     if (T16000Left == 1){
         LeftDev.YValue = T16000L[JOYY]; // Throttle
@@ -102,15 +108,71 @@ int AxisToKeySet(){
         LeftDev.KeyPosX = ThrustLeft;
         LeftDev.KeyNegZ = TrimInc;
         LeftDev.KeyPosZ = TrimDecr;
-        }
     }
+}
 
 int AxisToKey(int DC,short PKey){ // Application of Dutycycle call to keypress
     ActKey(LOCK+KEYON+PKey);
     DeferCall((DC+TouchDelay),&ActKey,PKey);
     //printf("Duty Cycle : %i ,%c \xa",DC,PKey);
     DeferCall(PWMTimeLenght,&ActKey,LOCK);
+}
+
+//---------------------------------------------------------------------------
+//              PWM Functions
+//---------------------------------------------------------------------------
+
+int PWMLogic(){
+    AxisToKeySet();
+    if (RightDev.YValue < (-RightDev.MinRangeY) | RightDev.YValue > RightDev.MinRangeY){ //Joystick Y axis
+        PulseFormer(RightDev.YValue,RightDev.HalfRangeY,RightDev.LastNegY,RightDev.LastPosY,RightDev.KeyNegY,RightDev.KeyPosY);
     }
+    if (RightDev.XValue < (-RightDev.MinRangeX) | RightDev.XValue > RightDev.MinRangeX){ //Joystick X axis
+        PulseFormer(RightDev.XValue,RightDev.HalfRangeX,RightDev.LastNegX,RightDev.LastPosX,RightDev.KeyNegX,RightDev.KeyPosX);
+    }
+        
+    if (T16000Right == 1) { //T16000.m Extra axis for Yaw controle
+        if (RightDev.ZValue < (-RightDev.MinRangeZ) | RightDev.ZValue > RightDev.MinRangeZ){ //Joystick Z axis
+            PulseFormer(RightDev.ZValue,RightDev.HalfRangeZ,RightDev.LastNegZ,RightDev.LastPosZ,RightDev.KeyNegZ,RightDev.KeyPosZ);
+        }
+    }
+        
+    if (WarthogThrottle == 1){
+        if (LeftDev.YValue < (-LeftDev.MinRangeY) | LeftDev.YValue > LeftDev.MinRangeY){ //A10 Throttle Y axis
+            PulseFormer(LeftDev.YValue,LeftDev.HalfRangeY,LeftDev.LastNegY,LeftDev.LastPosY,LeftDev.KeyNegY,LeftDev.KeyPosY);
+        }
+        if (LeftDev.XValue < (-LeftDev.MinRangeX) | LeftDev.XValue > LeftDev.MinRangeX){ //A10 Throttle X Axis
+            PulseFormer(LeftDev.XValue,LeftDev.HalfRangeX,LeftDev.LastNegX,LeftDev.LastPosX,LeftDev.KeyNegX,LeftDev.KeyPosX);
+        }
+        if (LeftDev.ZValue < (-LeftDev.MinRangeZ) | LeftDev.ZValue > LeftDev.MinRangeZ){ //A10 Throttle Z Axis
+            PulseFormer(LeftDev.ZValue,LeftDev.HalfRangeZ,LeftDev.LastNegZ,LeftDev.LastPosZ,LeftDev.KeyNegZ,LeftDev.KeyPosZ);
+        }
+    }
+            
+    if (T16000Left == 1){
+        if (LeftDev.YValue < (-LeftDev.MinRangeY) | LeftDev.YValue > LeftDev.MinRangeY){ //Joystick Y axis
+            PulseFormer(LeftDev.YValue,LeftDev.HalfRangeY,LeftDev.LastNegY,LeftDev.LastPosY,LeftDev.KeyNegY,LeftDev.KeyPosY);
+        }
+        if (LeftDev.XValue < (-LeftDev.MinRangeX) | LeftDev.XValue > LeftDev.MinRangeX){ //Joystick X axis
+            PulseFormer(LeftDev.XValue,LeftDev.HalfRangeX,LeftDev.LastNegX,LeftDev.LastPosX,LeftDev.KeyNegX,LeftDev.KeyPosX);
+        }
+        if (LeftDev.ZValue < (-LeftDev.MinRangeZ) | LeftDev.ZValue > LeftDev.MinRangeZ){ //Joystick Z axis
+            PulseFormer(LeftDev.ZValue,LeftDev.HalfRangeZ,LeftDev.LastNegZ,LeftDev.LastPosZ,LeftDev.KeyNegZ,LeftDev.KeyPosZ);
+        }
+    }
+}
+
+int PulseFormer(int axis_value,int range,int pos1,int pos2,word key1,word key2){
+    int onDutyTime = PWMPress(axis_value,range,pos1,pos2);
+    if (axis_value > 0){
+	   AxisToKey (onDutyTime, key1);
+	   //printf("Point 1+ > %i, %i, %x \xa",axis_value,onDutyTime,key1);
+    }
+    if (axis_value < 0){
+	   AxisToKey (abs(onDutyTime), key2);
+	   //printf("Point 1- > %i, %i, %x \xa",axis_value,abs(onDutyTime),key2);
+    }        
+}
 
 int PWMPress (int mag,int range,int pos1,int pos2){ // Math to convert Joystick Value to duty cycle in ms of a keypress. Dutycycle time is 100ms
     float fduty = 0.0;
@@ -120,94 +182,35 @@ int PWMPress (int mag,int range,int pos1,int pos2){ // Math to convert Joystick 
     if (mag > 0){
         //printf("PW Mag Cal Axis+: %i, %i \xa",mag,duty);
         return(DutyGreater(duty,pos1));
-        }
+    }
     if (mag < 0){
         //printf("PW Mag Cal Axis-: %i, %i \xa",mag,duty);
         return(DutyLess(duty,pos2));
-        }
     }
+}
 
 int DutyLess (int duty,int pos){ // Math to dampen return to zero values
     if (pos <= duty){
         pos = duty;
         //printf("Duty Less Ret: %i \xa",duty);
         return duty;
-        }
+    }
     else {
         pos = duty;
         //printf("Duty Less Disc: %i \xa",duty);
         return 0; 
-        }
     }
+}
     
 int DutyGreater (int duty,int pos){ // Math to dampen return to zero values
     if (pos >= duty){
         pos = duty;
         //printf("Duty Greater Ret: %i \xa",duty);
         return duty;
-        }
+    }
     else{
         pos = duty;
         //printf("Duty Greater Disc: %i \xa",duty);
         return 0;
-        }
     }
-    
-int PulseFormer(int axis_value,int range,int pos1,int pos2,word key1,word key2){
-    int onDutyTime = PWMPress(axis_value,range,pos1,pos2);
-    if (axis_value > 0){
-	   AxisToKey (onDutyTime, key1);
-	   //printf("Point 1+ > %i, %i, %x \xa",axis_value,onDutyTime,key1);
-	   }
-    if (axis_value < 0){
-	   AxisToKey (abs(onDutyTime), key2);
-	   //printf("Point 1- > %i, %i, %x \xa",axis_value,abs(onDutyTime),key2);
-	   }        
-    }
-    
-int MainPWMStart(){
-    AxisToKeySet(); // Set Device to variable calls
-    MapKey(&Throttle,APUON,CHAIN(REXEC(0,100,"PWMLogic();"),PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT+LED1))); // 100ms calls for the devices and turn on LED 1 for visual cue of activity
-    MapKey(&Throttle,APUOFF,CHAIN(EXEC("StopAutoRepeat(0);"),PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-LED1))); // kills 100ms calls to devices and turns off LED 1
-    }
-    
-
-int PWMLogic(){
-    AxisToKeySet();
-    if (RightDev.YValue < (-RightDev.MinRangeY) | RightDev.YValue > RightDev.MinRangeY){ //Joystick Y axis
-        PulseFormer(RightDev.YValue,RightDev.HalfRangeY,RightDev.LastNegY,RightDev.LastPosY,RightDev.KeyNegY,RightDev.KeyPosY);
-        }
-    if (RightDev.XValue < (-RightDev.MinRangeX) | RightDev.XValue > RightDev.MinRangeX){ //Joystick X axis
-        PulseFormer(RightDev.XValue,RightDev.HalfRangeX,RightDev.LastNegX,RightDev.LastPosX,RightDev.KeyNegX,RightDev.KeyPosX);
-        }
-        
-    if (T16000Right == 1) { //T16000.m Extra axis for Yaw controle
-        if (RightDev.ZValue < (-RightDev.MinRangeZ) | RightDev.ZValue > RightDev.MinRangeZ){ //Joystick Z axis
-            PulseFormer(RightDev.ZValue,RightDev.HalfRangeZ,RightDev.LastNegZ,RightDev.LastPosZ,RightDev.KeyNegZ,RightDev.KeyPosZ);
-            }
-        }
-        
-    if (WarthogThrottle == 1){
-        if (LeftDev.YValue < (-LeftDev.MinRangeY) | LeftDev.YValue > LeftDev.MinRangeY){ //A10 Throttle Y axis
-            PulseFormer(LeftDev.YValue,LeftDev.HalfRangeY,LeftDev.LastNegY,LeftDev.LastPosY,LeftDev.KeyNegY,LeftDev.KeyPosY);
-            }
-        if (LeftDev.XValue < (-LeftDev.MinRangeX) | LeftDev.XValue > LeftDev.MinRangeX){ //A10 Throttle X Axis
-            PulseFormer(LeftDev.XValue,LeftDev.HalfRangeX,LeftDev.LastNegX,LeftDev.LastPosX,LeftDev.KeyNegX,LeftDev.KeyPosX);
-            }
-        if (LeftDev.ZValue < (-LeftDev.MinRangeZ) | LeftDev.ZValue > LeftDev.MinRangeZ){ //A10 Throttle Z Axis
-            PulseFormer(LeftDev.ZValue,LeftDev.HalfRangeZ,LeftDev.LastNegZ,LeftDev.LastPosZ,LeftDev.KeyNegZ,LeftDev.KeyPosZ);
-            }
-        }
-            
-    if (T16000Left == 1){
-        if (LeftDev.YValue < (-LeftDev.MinRangeY) | LeftDev.YValue > LeftDev.MinRangeY){ //Joystick Y axis
-            PulseFormer(LeftDev.YValue,LeftDev.HalfRangeY,LeftDev.LastNegY,LeftDev.LastPosY,LeftDev.KeyNegY,LeftDev.KeyPosY);
-            }
-        if (LeftDev.XValue < (-LeftDev.MinRangeX) | LeftDev.XValue > LeftDev.MinRangeX){ //Joystick X axis
-            PulseFormer(LeftDev.XValue,LeftDev.HalfRangeX,LeftDev.LastNegX,LeftDev.LastPosX,LeftDev.KeyNegX,LeftDev.KeyPosX);
-            }
-        if (LeftDev.ZValue < (-LeftDev.MinRangeZ) | LeftDev.ZValue > LeftDev.MinRangeZ){ //Joystick Z axis
-            PulseFormer(LeftDev.ZValue,LeftDev.HalfRangeZ,LeftDev.LastNegZ,LeftDev.LastPosZ,LeftDev.KeyNegZ,LeftDev.KeyPosZ);
-            }
-        }
-    }
+}

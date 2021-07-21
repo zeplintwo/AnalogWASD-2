@@ -1,4 +1,4 @@
-// Part of Analog_WSAD_Profile#.# keybinds packages
+// Part of Analog_WASD_Profile#.# keybinds packages
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 //  Settings Storage for Script Values
@@ -13,6 +13,9 @@ define  LongPressDelay      300                     //Normal lenght delay sugest
 //---------------------------------------------------------------------------
 
 int     JSDeadZone          = 5;                    //is a percentage 0 to 100 this is a future proofing var use below 'DeadzoneCalPrec#' to control Axis->Key dead zone.
+int     MorseDashDelay      = 450;
+int     MorseDotDelay       = 300;
+int     MorseDelay          = 200;
 
 //---------------------------------------------------------------------------
 //  Joystick Axis Curves

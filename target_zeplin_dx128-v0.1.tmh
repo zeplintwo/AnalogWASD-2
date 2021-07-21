@@ -1,6 +1,6 @@
 // TARGET definitions some custom changes
 // Copyright (c) Thrustmaster
-// Part of Analog_WSAD_Profile#.# keybinds packages
+// Part of Analog_WASD_Profile#.# keybinds packages
 
 include "hid.tmh"
 include "defines.tmh"

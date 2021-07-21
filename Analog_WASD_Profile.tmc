@@ -1,31 +1,33 @@
-// Part of Analog_WSAD_Profile#.# keybinds packages
+// Part of Analog_WASD_Profile#.# keybinds packages
 //---------------------------------------------------------------------------
 //
-// Analog_WSAD scripts from Zeplin for HOTAS and Joystick Integration 0.1
+// Analog_WASD scripts from Zeplin for HOTAS and Joystick Integration 0.1
 //
-// Master Branch on GetHub: https://github.com/zeplintwo/FS19-TARGET-Profiles/tree/master
+// Master Branch on GetHub: https://github.com/zeplintwo/AnalogWASD-2
 //
 //      Scripts and codes are inspired from ED and other sources Aussiedroid has heavly influnced me.
 //
-//      This is a early attempt to build a Keymap for Analog_WSAD for the Warthog HOTAS and T16000.m Dual sticks.
+//      This is a early attempt to build a Keymap for Analog_WASD for the Warthog HOTAS and T16000.M Dual sticks.
 //      Most of the code checks out and works in exteral testing and the short game play that I have tested it. 
 //
 //      Please report any bugs, features or suggestion to above script branch.
 //
 //      This is a WIP there will be issues.
 //
-//      Use Analog_WSAD_User-Setting-v#.#.ttm to adjust user preferances.
+//      Use Analog_WASD_User_Setting#.#.ttm to adjust user preferances.
 //
 //      Script is built on the some generic keybinds for the default Analog_WSAD keybinds.       
 //
-//  Use Analog_WSAD-Keymaps-v#.#.ttm to adjust any changes to keybinds for script to function properly. I will try to keep up with changes as needed.
+//  Use Analog_WASD_Keymaps#.#.ttm to adjust any changes to keybinds for script to function properly. I will try to keep up with changes as needed.
 //
 //---------------------------------------------------------------------------
 include "target_zeplin_dx128-v0.1.tmh"              //modded target.tmh file so that it looks diffrent from stock
-include "Analog_WSAD_Keymapings.ttm"                //Keybinds for DU to TARGET scripting including the 128 DX Buttons for future usage
-include "Analog_WSAD_Macros.ttm"                    //macros for the script to work properly
-include "Analog_WSAD_User_Settings.ttm"             //User editable setting for the script
-include "Analog_WSAD_Pre-Axis_Macros.ttm"           //macros for the Axis to Key with a dutycycle logic
+include "Analog_WASD_User_Settings.ttm"             //User editable setting for the script
+include "Analog_WASD_Key_Defines.ttm"                //Keymaps for TARGET scripting where an USB Hex is assigned a name. includes the 128 DX Buttons for future usage
+include "Analog_WASD_Key_Binds.ttm"                  //Keybinds setup for all supported devices where you have the assigment to a button
+include "Analog_WASD_Macros.ttm"                    //macros for the script to work properly
+include "Analog_WASD_Pre-Axis_Macros.ttm"           //macros for the Axis to Key with a dutycycle logic
+include "Analog_WASD_Functions.ttm"                 //Functions for the higher confgurations of the script but do not directly work with the PWM macros
 
 //program startup
 int main(){
@@ -37,10 +39,14 @@ int main(){
 	Configure(&TFRPRudder, MODE_EXCLUDED);
 	Configure(&TWCSThrottle, MODE_EXCLUDED);
 	Configure(&TFRPHARudder, MODE_EXCLUDED);
-	
 	//end of exclustions
 	
+	//curve profiles for throttle single direction modes
+	AxisCurveProg = LIST(0,0, 35,25, 70,50, 80,75, 100,100);
+	AxisCurvePrecision = LIST(0,0, 25,10, 35,15, 45,20, 55,25, 65,30, 75,35, 100,40);
+	
 	if(Init(&EventHandle)) return 1; // declare the event handler, return on error
+	
     SetKBRate(PulseLength, DelayLength);
 	SetKBLayout(KB_ENG);
 	
@@ -49,12 +55,12 @@ int main(){
     
     if (AnalogWASD_Pre_axis == 1){ //Coding needed to make Joystick Axis control a key with a dutycycle 
         MainPWMStart();
-        }     
-    }
+    }     
+}
 
 //event handler
 int EventHandle(int type, alias o, int x){       
     DefaultMapping(&o, x);
 	//add event handling code here   
-    }
+}
     

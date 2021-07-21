@@ -1,0 +1,11 @@
+// Part of Analog_WASD_Profile#.# keybinds packages
+//---------------------------------------------------------------------------
+//              CUSTOM MACROS
+//---------------------------------------------------------------------------
+   
+int mDirBurst(short key1,short key2){// short throttle bumps for nudging the craft in a direction
+    ActKey(KEYON+key1);
+    DeferCall(PulseLength,&ActKey,key1);
+    DeferCall(PulseLength+1,&ActKey,KEYON+key2);
+    DeferCall(PulseLength*2+2,&ActKey,key2);
+}
