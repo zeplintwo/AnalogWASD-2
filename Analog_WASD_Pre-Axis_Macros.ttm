@@ -1,8 +1,7 @@
 // Part of Analog_WASD_Profile#.# keybinds packages
 //---------------------------------------------------------------------------
-//              VARIABLE INITALISATION
+//               Variable Initalisation
 //---------------------------------------------------------------------------
-
 struct JoyDevice{
     int MinRangeY; //calcuated minimum range for the Y axis of the device
     int MinRangeX; //calcuated minimum range for the X axis of the device
@@ -30,14 +29,30 @@ struct JoyDevice{
 JoyDevice RightDev;
 JoyDevice LeftDev;
 
+int CCount      = 0;
+
 //---------------------------------------------------------------------------
 //              WSAD Functions
 //---------------------------------------------------------------------------
-
 int MainPWMStart(){
-    AxisToKeySet(); // Set Device to variable calls
-    MapKey(&Throttle,APUON,CHAIN(REXEC(0,100,"PWMLogic();"),PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT+LED1))); // 100ms calls for the devices and turn on LED 1 for visual cue of activity
-    MapKey(&Throttle,APUOFF,CHAIN(EXEC("StopAutoRepeat(0);"),PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-LED1))); // kills 100ms calls to devices and turns off LED 1
+    if (WarthogThrottle == 1){
+        initLEDController();
+        AxisToKeySet(); // Set Device to variable calls
+        MapKey(&Throttle,APUON,CHAIN(REXEC(0,100,"PWMLogic();"),PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT+LED1))); // 100ms calls for the devices and turn on LED 1 for visual cue of activity
+        MapKey(&Throttle,APUOFF,CHAIN(EXEC("StopAutoRepeat(0);"),PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-LED1))); // kills 100ms calls to devices and turns off LED 1
+    }
+    if (T16000Left == 1){
+        if (CCount < 1) {
+            CCount=0; 
+            printf("Loading Axis-to-Key Binds \xa");
+            MapKey(&T16000L, B16,CHAIN(REXEC(0,100,"PWMLogic();"),printf("PWM Logic Loaded\xa")));
+        }
+        else{
+            CCount=1;
+            printf("Unloading Axis-to-Key Binds \xa");
+            MapKey(&T16000L, B16,EXEC("StopAutoRepeat(0);"));
+        }
+    }
 }
 
 int AxisToKeySet(){
@@ -166,11 +181,11 @@ int PulseFormer(int axis_value,int range,int pos1,int pos2,word key1,word key2){
     int onDutyTime = PWMPress(axis_value,range,pos1,pos2);
     if (axis_value > 0){
 	   AxisToKey (onDutyTime, key1);
-	   //printf("Point 1+ > %i, %i, %x \xa",axis_value,onDutyTime,key1);
+	   printf("Point 1+ > %i, %i, %x \xa",axis_value,onDutyTime,key1);
     }
     if (axis_value < 0){
 	   AxisToKey (abs(onDutyTime), key2);
-	   //printf("Point 1- > %i, %i, %x \xa",axis_value,abs(onDutyTime),key2);
+	   printf("Point 1- > %i, %i, %x \xa",axis_value,abs(onDutyTime),key2);
     }        
 }
 

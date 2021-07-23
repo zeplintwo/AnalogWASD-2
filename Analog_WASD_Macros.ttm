@@ -1,6 +1,6 @@
 // Part of Analog_WASD_Profile#.# keybinds packages
 //---------------------------------------------------------------------------
-//              CUSTOM MACROS
+//              Custom Macros
 //---------------------------------------------------------------------------
    
 int mDirBurst(short key1,short key2){// short throttle bumps for nudging the craft in a direction

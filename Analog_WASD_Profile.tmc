@@ -41,17 +41,12 @@ int main(){
 	Configure(&TFRPHARudder, MODE_EXCLUDED);
 	//end of exclustions
 	
-	//curve profiles for throttle single direction modes
-	AxisCurveProg = LIST(0,0, 35,25, 70,50, 80,75, 100,100);
-	AxisCurvePrecision = LIST(0,0, 25,10, 35,15, 45,20, 55,25, 65,30, 75,35, 100,40);
-	
 	if(Init(&EventHandle)) return 1; // declare the event handler, return on error
 	
     SetKBRate(PulseLength, DelayLength);
 	SetKBLayout(KB_ENG);
 	
     ControlAxisCurveSetup();
-    initLEDController();
     
     if (AnalogWASD_Pre_axis == 1){ //Coding needed to make Joystick Axis control a key with a dutycycle 
         MainPWMStart();

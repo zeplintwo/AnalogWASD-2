@@ -1,8 +1,11 @@
 // Part of Analog_WSAD_Profile#.# keybinds packages
 //---------------------------------------------------------------------------
-//               Multi-Function Scripts
+//               Variable Initalisation
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+//               Multi-Function Scripts
+//---------------------------------------------------------------------------
 int initLEDController(){
 	ActKey(PULSE+KEYON+LED(&Throttle, LED_INTENSITY, 255)); // Initiate LED status below
 	ActKey(PULSE+KEYON+LED(&Throttle, LED_INTENSITY, 129)); // Set backlight for Throttle
@@ -16,8 +19,7 @@ int initLEDController(){
 
 //---------------------------------------------------------------------------
 //               Control Setup Functions
-//---------------------------------------------------------------------------
-
+//---------------------------------------------------------------------------\
 int ControlAxisCurveSetup(){ //exclusion switching for Duals or Warthog HOTAS
     printf("\xa");
     if (WarthogStick == 1 & T16000Right == 0){ //Selection of Warthog Stick for Right Side
@@ -52,7 +54,6 @@ int ControlAxisCurveSetup(){ //exclusion switching for Duals or Warthog HOTAS
         SettingError('L');
     }
 }
-
 
 int JoyA10Set(){
     MapAxis(&Joystick, JOYX, DX_X_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);     
