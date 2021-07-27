@@ -41,18 +41,6 @@ int MainPWMStart(){
         MapKey(&Throttle,APUON,CHAIN(REXEC(0,100,"PWMLogic();"),PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT+LED1))); // 100ms calls for the devices and turn on LED 1 for visual cue of activity
         MapKey(&Throttle,APUOFF,CHAIN(EXEC("StopAutoRepeat(0);"),PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-LED1))); // kills 100ms calls to devices and turns off LED 1
     }
-    if (T16000Left == 1){
-        if (CCount < 1) {
-            CCount=0; 
-            printf("Loading Axis-to-Key Binds \xa");
-            MapKey(&T16000L, B16,CHAIN(REXEC(0,100,"PWMLogic();"),printf("PWM Logic Loaded\xa")));
-        }
-        else{
-            CCount=1;
-            printf("Unloading Axis-to-Key Binds \xa");
-            MapKey(&T16000L, B16,EXEC("StopAutoRepeat(0);"));
-        }
-    }
 }
 
 int AxisToKeySet(){
@@ -95,10 +83,10 @@ int AxisToKeySet(){
         RightDev.ZValue = T16000[RUDDER]; // Yaw
         RightDev.HalfRangeY = T16000HalfRange;
         RightDev.HalfRangeX = T16000HalfRange;
-        RightDev.HalfRangeZ = T16000HalfRange;
-        RightDev.MinRangeY = T16000AxisRange*DeadZoneCalPerc;
-        RightDev.MinRangeY = T16000AxisRange*DeadZoneCalPerc;
-        RightDev.MinRangeY = T16000AxisRange*DeadZoneCalPerc;
+        RightDev.HalfRangeZ = T16000RotHalfRange;
+        RightDev.MinRangeY = T16000AxisRange*DeadZoneCalPerc1;
+        RightDev.MinRangeX = T16000AxisRange*DeadZoneCalPerc1;
+        RightDev.MinRangeZ = T16000RotAxisRange*DeadZoneCalPerc1;
         RightDev.KeyNegY = PitchUp;
         RightDev.KeyPosY = PitchDown;
         RightDev.KeyNegX = RollRight;
@@ -113,10 +101,10 @@ int AxisToKeySet(){
         LeftDev.ZValue = T16000L[RUDDER];
         LeftDev.HalfRangeY = T16000HalfRange;
         LeftDev.HalfRangeX = T16000HalfRange;
-        LeftDev.HalfRangeZ = T16000HalfRange;
+        LeftDev.HalfRangeZ = T16000RotHalfRange;
         LeftDev.MinRangeY = T16000AxisRange*DeadZoneCalPerc1;
         LeftDev.MinRangeX = T16000AxisRange*DeadZoneCalPerc1;
-        LeftDev.MinRangeZ = T16000AxisRange*DeadZoneCalPerc1;
+        LeftDev.MinRangeZ = T16000RotAxisRange*DeadZoneCalPerc1;
         LeftDev.KeyNegY = ThrottleUp;
         LeftDev.KeyPosY = ThrottleDown;
         LeftDev.KeyNegX = ThrustRight;
@@ -129,7 +117,7 @@ int AxisToKeySet(){
 int AxisToKey(int DC,short PKey){ // Application of Dutycycle call to keypress
     ActKey(LOCK+KEYON+PKey);
     DeferCall((DC+TouchDelay),&ActKey,PKey);
-    //printf("Duty Cycle : %i ,%c \xa",DC,PKey);
+    if(Debug) printf("Duty Cycle : %i ,%c \xa",DC,PKey);
     DeferCall(PWMTimeLenght,&ActKey,LOCK);
 }
 
@@ -138,6 +126,7 @@ int AxisToKey(int DC,short PKey){ // Application of Dutycycle call to keypress
 //---------------------------------------------------------------------------
 
 int PWMLogic(){
+    //printf("tick \xa");
     AxisToKeySet();
     if (RightDev.YValue < (-RightDev.MinRangeY) | RightDev.YValue > RightDev.MinRangeY){ //Joystick Y axis
         PulseFormer(RightDev.YValue,RightDev.HalfRangeY,RightDev.LastNegY,RightDev.LastPosY,RightDev.KeyNegY,RightDev.KeyPosY);
@@ -181,11 +170,11 @@ int PulseFormer(int axis_value,int range,int pos1,int pos2,word key1,word key2){
     int onDutyTime = PWMPress(axis_value,range,pos1,pos2);
     if (axis_value > 0){
 	   AxisToKey (onDutyTime, key1);
-	   printf("Point 1+ > %i, %i, %x \xa",axis_value,onDutyTime,key1);
+	   if(Debug) printf("Point 1+ > %i, %i, %x \xa",axis_value,onDutyTime,key1);
     }
     if (axis_value < 0){
 	   AxisToKey (abs(onDutyTime), key2);
-	   printf("Point 1- > %i, %i, %x \xa",axis_value,abs(onDutyTime),key2);
+	   if(Debug) printf("Point 1- > %i, %i, %x \xa",axis_value,abs(onDutyTime),key2);
     }        
 }
 
@@ -195,11 +184,11 @@ int PWMPress (int mag,int range,int pos1,int pos2){ // Math to convert Joystick 
     fduty = (abs(mag)/range)*PWMTimeLenght;
     duty = fduty-fduty%1;
     if (mag > 0){
-        //printf("PW Mag Cal Axis+: %i, %i \xa",mag,duty);
+        if(Debug) printf("PW Mag Cal Axis+: %i, %i \xa",mag,duty);
         return(DutyGreater(duty,pos1));
     }
     if (mag < 0){
-        //printf("PW Mag Cal Axis-: %i, %i \xa",mag,duty);
+        if(Debug) printf("PW Mag Cal Axis-: %i, %i \xa",mag,duty);
         return(DutyLess(duty,pos2));
     }
 }
@@ -207,12 +196,12 @@ int PWMPress (int mag,int range,int pos1,int pos2){ // Math to convert Joystick 
 int DutyLess (int duty,int pos){ // Math to dampen return to zero values
     if (pos <= duty){
         pos = duty;
-        //printf("Duty Less Ret: %i \xa",duty);
+        if(Debug) printf("Duty Less Ret: %i \xa",duty);
         return duty;
     }
     else {
         pos = duty;
-        //printf("Duty Less Disc: %i \xa",duty);
+        if(Debug) printf("Duty Less Disc: %i \xa",duty);
         return 0; 
     }
 }
@@ -220,12 +209,12 @@ int DutyLess (int duty,int pos){ // Math to dampen return to zero values
 int DutyGreater (int duty,int pos){ // Math to dampen return to zero values
     if (pos >= duty){
         pos = duty;
-        //printf("Duty Greater Ret: %i \xa",duty);
+        if(Debug) printf("Duty Greater Ret: %i \xa",duty);
         return duty;
     }
     else{
         pos = duty;
-        //printf("Duty Greater Disc: %i \xa",duty);
+        if(Debug) printf("Duty Greater Disc: %i \xa",duty);
         return 0;
     }
 }

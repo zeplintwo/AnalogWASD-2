@@ -14,14 +14,14 @@ int initLEDController(){
     ActKey(KEYON+PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-LED3));
 	ActKey(KEYON+PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-LED4));
 	ActKey(KEYON+PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-LED5));
-    printf("LED's Reset \xa");
+    if(Verbose) printf("LED's Reset \xa");
 }
 
 //---------------------------------------------------------------------------
 //               Control Setup Functions
 //---------------------------------------------------------------------------\
 int ControlAxisCurveSetup(){ //exclusion switching for Duals or Warthog HOTAS
-    printf("\xa");
+    if(Verbose) printf("\xa");
     if (WarthogStick == 1 & T16000Right == 0){ //Selection of Warthog Stick for Right Side
         if (T16000Left == 0) {
             Configure(&T16000, MODE_EXCLUDED);
@@ -31,8 +31,8 @@ int ControlAxisCurveSetup(){ //exclusion switching for Duals or Warthog HOTAS
     }
     else if (T16000Right == 1 & WarthogStick == 0){
         Configure(&Joystick, MODE_EXCLUDED);
-        printf("---T16000.m Right Loading \xa");
-        JoyT16Set();
+        if(Verbose) printf("---T16000.m Right Loading \xa");
+        JoyT16RSet();
     }
     else{
         SettingError('R');
@@ -42,13 +42,13 @@ int ControlAxisCurveSetup(){ //exclusion switching for Duals or Warthog HOTAS
         if (T16000Right == 0) {
             Configure(&T16000, MODE_EXCLUDED);
             }
-        printf("---Warthog Throttle Loading \xa");
+        if(Verbose) printf("---Warthog Throttle Loading \xa");
         ThrA10Set();
     }
     else if (T16000Left==1 & WarthogThrottle == 0){
         Configure(&Throttle, MODE_EXCLUDED);
-        printf("---T16000.m Left Loading \xa");
-        JoyT16Set();
+        if(Verbose) printf("---T16000.m Left Loading \xa");
+        JoyT16LSet();
     }
     else{
         SettingError('L');
@@ -61,7 +61,7 @@ int JoyA10Set(){
     //Warthog Joystick Curves
 	SetSCurve(&Joystick, JOYX, 0,JSDeadZone,0,(JSCurve[JSProfile]/2),JSZoom[JSProfile]);
 	SetSCurve(&Joystick, JOYY, 0,JSDeadZone,0,(JSCurve[JSProfile]/2),JSZoom[JSProfile]);
-	printf("---Warthog Joystick Curves Set \xa");
+	if(Verbose) printf("---Warthog Joystick Curves Set \xa");
 	WarthogJoyBinds();
 }  
     
@@ -77,11 +77,11 @@ int ThrA10Set(){
 	SetJCurve(&Throttle, THR_RIGHT, 50, 50);
 	SetJCurve(&Throttle, THR_LEFT, 50, 50);
 	SetJCurve(&Throttle, THR_FC, 50, 50);
-	printf("---Warthog Throttle Curves Set \xa");
+	if(Verbose) printf("---Warthog Throttle Curves Set \xa");
     WarthogThrottleBinds();	
 }
     
-int JoyT16Set(){ //Dual T16000.m Curves
+int JoyT16LSet(){ //T16000.m Left Curves
     if (T16000Left == 1 ){
         MapAxis(&T16000L, JOYX, DX_XROT_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
         MapAxis(&T16000L, JOYY, DX_YROT_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
@@ -90,9 +90,12 @@ int JoyT16Set(){ //Dual T16000.m Curves
         SetSCurve(&T16000L, JOYX, 0,JSDeadZone,0,JSCurve[JSProfile],JSZoom[JSProfile]);
         SetSCurve(&T16000L, JOYY, 0,JSDeadZone,0,JSCurve[JSProfile],JSZoom[JSProfile]);
         SetSCurve(&T16000L, RUDDER, 0,JSDeadZone,0,JSCurve[JSProfile],JSZoom[JSProfile]);
-        printf("---T16000.m Left Joystick Curves Set \xa") ;
+        if(Verbose) printf("---T16000.m Left Joystick Curves Set \xa") ;
         T16LeftBinds();
     }
+}
+    
+int JoyT16RSet(){ //T16000.m Right Curves
     if (T16000Right == 1 ){
         MapAxis(&T16000, JOYX, DX_X_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
         MapAxis(&T16000, JOYY, DX_Y_AXIS, AXIS_NORMAL, MAP_ABSOLUTE);
@@ -101,7 +104,7 @@ int JoyT16Set(){ //Dual T16000.m Curves
         SetSCurve(&T16000, JOYX, 0,JSDeadZone,0,JSCurve[JSProfile],JSZoom[JSProfile]);
         SetSCurve(&T16000, JOYY, 0,JSDeadZone,0,JSCurve[JSProfile],JSZoom[JSProfile]);
         SetSCurve(&T16000, RUDDER, 0,JSDeadZone,0,JSCurve[JSProfile],JSZoom[JSProfile]);
-        printf("---T16000.m Right Joystick Curves Set \xa");
+        if(Verbose) printf("---T16000.m Right Joystick Curves Set \xa");
         T16RightBinds();
     }
 }

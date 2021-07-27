@@ -8,7 +8,7 @@ int WarthogJoyBinds(){//Keybindings for the Warthog Joysick key assignments.
     MapKeyIOUMD(&Joystick,TG2,0,0,0,0,0,0);
     MapKeyIOUMD(&Joystick,S1,0,0,0,0,0,0);
     MapKeyIOUMD(&Joystick,S2,0,0,0,0,0,0);
-    MapKeyIOUMD(&Joystick,S3,0,0,0,0,0,0);
+    //MapKeyIOUMD(&Joystick,S3,0,0,0,0,0,0);//Reserved for IO activation
     MapKeyIOUMD(&Joystick,S4,0,0,0,0,0,0);
     MapKeyIOUMD(&Joystick,H1U,0,0,0,0,0,0);
     MapKeyIOUMD(&Joystick,H1D,0,0,0,0,0,0);
@@ -27,20 +27,22 @@ int WarthogJoyBinds(){//Keybindings for the Warthog Joysick key assignments.
     MapKeyIOUMD(&Joystick,H4L,0,0,0,0,0,0);
     MapKeyIOUMD(&Joystick,H4R,0,0,0,0,0,0);
     MapKeyIOUMD(&Joystick,H4P,0,0,0,0,0,0);
-    printf("---Warthog Joystick Binds Loaded.\xa \xa");
+    if(Verbose) printf("---Warthog Joystick Binds Loaded.\xa \xa");
     }
 
-int WarthogThrottleBinds(){//Keybindings for the Warthog Throttle key assignments.   
-    MapKeyIOUMD(&Throttle, MSP,0,0,0,0,0,0);
+int WarthogThrottleBinds(){//Keybindings for the Warthog Throttle key assignments. 
+    SetShiftButton(&Joystick, S3, &Throttle,BSF,BSB);
+    //MapKeyIOUMD(&Throttle, MSP,0,0,0,0,0,0); //Push to talk reserve
     MapKeyIOUMD(&Throttle, MSU,0,0,0,0,0,0);
-    MapKeyIOUMD(&Throttle, MSR,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, MSR,0,0,0,EXEC("mDirBurst(ThrottleDown,ThrottleUp);"),0,0);
     MapKeyIOUMD(&Throttle, MSD,0,0,0,0,0,0);
-    MapKeyIOUMD(&Throttle, MSL,0,0,0,0,0,0);
+    MapKeyIOUMD(&Throttle, MSL,0,0,0,EXEC("mDirBurst(ThrottleUp,ThrottleDown);"),0,0);
     MapKeyIOUMD(&Throttle, SPDF,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, SPDM,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, SPDB,0,0,0,0,0,0);
-    MapKeyIOUMD(&Throttle, BSF,0,0,0,0,0,0);
-    MapKeyIOUMD(&Throttle, BSB,0,0,0,0,0,0);
+    //MapKeyIOUMD(&Throttle, BSF,0,0,0,0,0,0); //UMD activation reserve
+    //MapKeyIOUMD(&Throttle, BSM,0,0,0,0,0,0); //UMD activation reserve
+    //MapKeyIOUMD(&Throttle, BSB,0,0,0,0,0,0); //UMD activation reserve
     MapKeyIOUMD(&Throttle, CHF,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, CHB,0,0,0,0,0,0);
     MapKey(&Throttle,PSF,EXEC("ExtComms();"));
@@ -52,6 +54,7 @@ int WarthogThrottleBinds(){//Keybindings for the Warthog Throttle key assignment
     MapKeyIOUMD(&Throttle, EOLMOTOR,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, EORMOTOR,0,0,0,0,0,0);
     //MapKeyIOUMD(&Throttle, APUON,0,0,0,0,0,0); // Reserved for Analog WASD functaionality
+    //MapKeyIOUMD(&Throttle, APUOFF,0,0,0,0,0,0); // Reserved for Analog WASD functaionality
     MapKeyIOUMD(&Throttle, LDGH,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, FLAPU,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, FLAPD,0,0,0,0,0,0);
@@ -64,13 +67,12 @@ int WarthogThrottleBinds(){//Keybindings for the Warthog Throttle key assignment
     MapKeyIOUMD(&Throttle, IDLELON,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, EOLIGN,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, EORIGN,0,0,0,0,0,0);
-    MapKey(&Throttle, CSU,ThrustUp);
-    MapKey(&Throttle, CSR,ThrustRight);
-    MapKey(&Throttle, CSD,ThrustDown);
-    MapKey(&Throttle, CSL,ThrustLeft);
+    MapKeyIOUMD(&Throttle, CSU,0,ThrustUp,0,ThrustUp,0,ThrustUp);
+    MapKeyIOUMD(&Throttle, CSD,0,ThrustDown,0,ThrustDown,0,ThrustDown);
+    MapKeyIOUMD(&Throttle, CSL,0,ThrustLeft,0,ThrustLeft,0,ThrustLeft);
+    MapKeyIOUMD(&Throttle, CSR,0,ThrustRight,0,ThrustRight,0,ThrustRight);
     MapKeyIOUMD(&Throttle, EFLOVER,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, EFROVER,0,0,0,0,0,0);
-    //MapKeyIOUMD(&Throttle, APUOFF,0,0,0,0,0,0); // Reserved for Analog WASD functaionality
     MapKeyIOUMD(&Throttle, EACOFF,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, RDRDIS,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, APDIS,0,0,0,0,0,0);
@@ -79,10 +81,9 @@ int WarthogThrottleBinds(){//Keybindings for the Warthog Throttle key assignment
     MapKeyIOUMD(&Throttle, EOLNORM,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, EORNORM,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, FLAPM,0,0,0,0,0,0);
-    MapKeyIOUMD(&Throttle, BSM,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, CHM,0,0,0,0,0,0);
     MapKeyIOUMD(&Throttle, APAH,0,0,0,0,0,0);        
-    printf("---Warthog Throttle Binds Loaded.\xa \xa");    
+    if(Verbose) printf("---Warthog Throttle Binds Loaded.\xa \xa");    
     }
 
 int T16LeftBinds(){
@@ -96,7 +97,7 @@ int T16LeftBinds(){
     MapKey(&T16000L, B8,0);
     MapKey(&T16000L, B9,0);
     MapKey(&T16000L, B10,0);
-    //MapKey(&T16000L, B11,0); // Reserved for Analog WASD functaionality
+    MapKey(&T16000L, B11,0);
     MapKey(&T16000L, B12,0);
     MapKey(&T16000L, B13,0);
     MapKey(&T16000L, B14,0);
@@ -106,7 +107,7 @@ int T16LeftBinds(){
     MapKey(&T16000L, H1R,0);
     MapKey(&T16000L, H1D,0);
     MapKey(&T16000L, H1L,0);
-    printf("---T16000.m Left Binds Loaded.\xa \xa");    
+    if(Verbose) printf("---T16000.m Left Binds Loaded.\xa \xa");    
     }
     
 int T16RightBinds(){
@@ -130,5 +131,5 @@ MapKey(&T16000L, TS1,0);
     MapKey(&T16000, H1R,0);
     MapKey(&T16000, H1D,0);
     MapKey(&T16000, H1L,0);
-    printf("---T16000.m Right Binds Loaded.\xa \xa");    
+    if(Verbose) printf("---T16000.m Right Binds Loaded.\xa \xa");    
     }

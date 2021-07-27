@@ -40,8 +40,8 @@ short   JSZoom[]            =   {0,0,-2};           //{Progresive,Flat,Percision
 //
 // You must have WarthogStick or T16000Stick in the On (1) postion and the other Off (0).
 
-    int WarthogStick    = 0;    //Default 1
-    int WarthogThrottle = 0;    //Default 1
+    int WarthogStick    = 1;    //Default 1
+    int WarthogThrottle = 1;    //Default 1
 
 // T16000.M Thrustmaster as right stick
 //
@@ -49,14 +49,20 @@ short   JSZoom[]            =   {0,0,-2};           //{Progresive,Flat,Percision
 //
 // You must have WarthogStick or T16000Stick in the On (1) postion and the other Off (0).
 
-    int T16000Right = 1;        //Default 0
-    int T16000Left  = 1;        //Default 0
+    int T16000Right = 0;        //Default 0
+    int T16000Left  = 0;        //Default 0
 
 // Keyboard emulation of control azis
 //
 // set AnalogWASD_Pre_axis to 1 for map to keys or 0 for traditonal curves. This is a future profing function
 
     int AnalogWASD_Pre_axis = 1;        //Default 1 
+    
+
+// Verbose and Debug output for check text
+
+    int Verbose = 1;            //Default 1
+    int Debug = 0;              //Default 0
 
 //---------------------------------------------------------------------------
 //  Settings Storage for Axis->Key Values
@@ -64,6 +70,8 @@ short   JSZoom[]            =   {0,0,-2};           //{Progresive,Flat,Percision
 
 int     T16000AxisRange     = 16383;                //full sweep values for joystick axis (default is 16383)
 int     T16000HalfRange     = 8191;                 //half of the above full sweep value (default is 8191)
+int     T16000RotAxisRange  = 255;
+int     T16000RotHalfRange  = 128;
 int     TouchDelay          = 25;                   //Release timer for the dutycycle system in milliseconds (1000 ms is one second)if keys are not beeing relased increase this time(default is 25)
 int     PWMTimeLenght       = 100;                  //timing for full pulse to occure the total lenght of time for it duty in milliseconds (default is 100)
 int     A10JoyAxisRange     = 65535;                //full sweep values for joystick axis (default is 65535)

@@ -26,7 +26,7 @@ define ThrustRight      USB[0x4F]   //right arrow translate, strafe,thrust right
 define ThrustLeft       USB[0x50]   //left arrow translate, strafe,thrust left
 define Brakes           USB[0xE0]   //left control/ctrl brakes, stoping thrust, aero brakes, retro thrust, reverse
 define ExtVoice         USB[0x48]   //Pause/Break for external Comms
-define IntVoice         USB[0x48]   //Scroll Lock for internal Comms
+define IntVoice         USB[0x47]   //Scroll Lock for internal Comms
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // REFERENCE: USB KEY DEFINITIONS //																															//
