@@ -23,8 +23,8 @@
 //---------------------------------------------------------------------------
 include "target_zeplin_dx128-v0.1.tmh"              //modded target.tmh file so that it looks diffrent from stock
 include "Analog_WASD_User_Settings.ttm"             //User editable setting for the script
-include "Analog_WASD_Key_Binds.ttm"                  //Keybinds setup for all supported devices where you have the assigment to a button
-include "Analog_WASD_Key_Defines.ttm"                //Keymaps for TARGET scripting where an USB Hex is assigned a name. includes the 128 DX Buttons for future usage
+include "Analog_WASD_Key_Binds.ttm"                 //Keybinds setup for all supported devices where you have the assigment to a button
+include "Analog_WASD_Key_Defines.ttm"               //Keymaps for TARGET scripting where an USB Hex is assigned a name. includes the 128 DX Buttons for future usage
 include "Analog_WASD_Macros.ttm"                    //macros for the script to work properly
 include "Analog_WASD_Pre-Axis_Macros.ttm"           //macros for the Axis to Key with a dutycycle logic
 include "Analog_WASD_Functions.ttm"                 //Functions for the higher confgurations of the script but do not directly work with the PWM macros

@@ -43,6 +43,19 @@ int MainPWMStart(){
     }
 }
 
+int T16000Logic(){
+    if (CCount<1){
+        CCount=CCount+1; 
+        printf("Loading PWM Logic\xa");
+        ActKey( KEYON+DOWN+REXEC(0,100,"PWMLogic();",RNOSTOP));
+    }
+    else{
+        CCount=0;
+        printf("Unloading PWM Logic\xa");
+        ActKey( KEYON+UP+EXEC("StopAutoRepeat(0);"));
+    }        
+}
+    
 int AxisToKeySet(){
     if (WarthogStick == 1){
         RightDev.YValue = Joystick[JOYY]; // Pitch
@@ -126,7 +139,7 @@ int AxisToKey(int DC,short PKey){ // Application of Dutycycle call to keypress
 //---------------------------------------------------------------------------
 
 int PWMLogic(){
-    //printf("tick \xa");
+    if (Debug) printf("tick \xa");
     AxisToKeySet();
     if (RightDev.YValue < (-RightDev.MinRangeY) | RightDev.YValue > RightDev.MinRangeY){ //Joystick Y axis
         PulseFormer(RightDev.YValue,RightDev.HalfRangeY,RightDev.LastNegY,RightDev.LastPosY,RightDev.KeyNegY,RightDev.KeyPosY);

@@ -91,7 +91,7 @@ int T16LeftBinds(){
     MapKey(&T16000L, TS2,0);
     MapKey(&T16000L, TS3,0);
     MapKey(&T16000L, TS4,0);
-    MapKey(&T16000L, B5,0);
+    MapKey(&T16000L, B5,EXEC("T16000Logic();"));//Reserved for PWM Logic
     MapKey(&T16000L, B6,0);
     MapKey(&T16000L, B7,0);
     MapKey(&T16000L, B8,0);
@@ -115,7 +115,7 @@ MapKey(&T16000L, TS1,0);
     MapKey(&T16000, TS2,0);
     MapKey(&T16000, TS3,0);
     MapKey(&T16000, TS4,0);
-    MapKey(&T16000, B5,0);
+    MapKey(&T16000, B5,EXEC("T16000Logic();"));//Reserved for PWM Logic
     MapKey(&T16000, B6,0);
     MapKey(&T16000, B7,0);
     MapKey(&T16000, B8,0);
