@@ -9,14 +9,14 @@ This was not a simple task as I have been though no less than 5 code designs. Th
 
 ## **WIP**
 
-* I have built in the ability to use the T16000.m Dual sticks (NO TESTING OF T1600.M HAS BEEN DONE YET).
+* ~~I have built in the ability to use the T16000.m Dual sticks (NO TESTING OF T1600.M HAS BEEN DONE YET).~~
 * Build a default keymap for flight controls. 
 * Build referance PDF's for flight control functions.
 * TM T.Flight Rudder Pedals (TFRP) - in Flight Mode
 * Planned features:
 	1. Switchable throttle maps
 	2. Switchable Joystick maps
-	3. Internal comm switch and external coms switch or both toggle with visual.
+	3. ~~Internal comm switch and external coms switch or both toggle with visual.~~
 	4. Posable TrackIR/FaceTrack controls
 	6. Posable VoiceCommand intgrations
 	5. More to come as Starbase comes out
