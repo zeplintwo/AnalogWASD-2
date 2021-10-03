@@ -4,8 +4,8 @@
 //---------------------------------------------------------------------------
 
 int WarthogJoyBinds(){//Keybindings for the Warthog Joysick key assignments.
-    MapKeyIOUMD(&Joystick,TG1,0,0,0,0,0,0);
-    MapKeyIOUMD(&Joystick,TG2,0,0,0,0,0,0);
+    MapKey(&Joystick,TG1,0);
+    MapKey(&Joystick,TG2,DX1);
     MapKeyIOUMD(&Joystick,S1,0,0,0,0,0,0);
     MapKeyIOUMD(&Joystick,S2,0,0,0,0,0,0);
     //MapKeyIOUMD(&Joystick,S3,0,0,0,0,0,0);//Reserved for IO activation
@@ -111,7 +111,7 @@ int T16LeftBinds(){
     }
     
 int T16RightBinds(){
-MapKey(&T16000L, TS1,0);
+    MapKey(&T16000, TS1,0);
     MapKey(&T16000, TS2,0);
     MapKey(&T16000, TS3,0);
     MapKey(&T16000, TS4,0);

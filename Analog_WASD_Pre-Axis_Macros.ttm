@@ -38,7 +38,7 @@ int MainPWMStart(){
     if (WarthogThrottle == 1){
         initLEDController();
         AxisToKeySet(); // Set Device to variable calls
-        MapKey(&Throttle,APUON,CHAIN(REXEC(0,100,"PWMLogic();"),PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT+LED1))); // 100ms calls for the devices and turn on LED 1 for visual cue of activity
+        MapKey(&Throttle,APUON,CHAIN(REXEC(0,(PWMTimeLenght+TouchDelay),"PWMLogic();"),PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT+LED1))); // 100ms calls for the devices and turn on LED 1 for visual cue of activity
         MapKey(&Throttle,APUOFF,CHAIN(EXEC("StopAutoRepeat(0);"),PULSE+LED(&Throttle, LED_ONOFF, LED_CURRENT-LED1))); // kills 100ms calls to devices and turns off LED 1
     }
 }
@@ -47,7 +47,7 @@ int T16000Logic(){
     if (CCount<1){
         CCount=CCount+1; 
         printf("Loading PWM Logic\xa");
-        ActKey( KEYON+DOWN+REXEC(0,100,"PWMLogic();",RNOSTOP));
+        ActKey( KEYON+DOWN+REXEC(0,(PWMTimeLenght+TouchDelay),"PWMLogic();",RNOSTOP));
     }
     else{
         CCount=0;
@@ -131,7 +131,6 @@ int AxisToKey(int DC,short PKey){ // Application of Dutycycle call to keypress
     ActKey(LOCK+KEYON+PKey);
     DeferCall((DC+TouchDelay),&ActKey,PKey);
     if(Debug) printf("Duty Cycle : %i ,%c \xa",DC,PKey);
-    DeferCall(PWMTimeLenght,&ActKey,LOCK);
 }
 
 //---------------------------------------------------------------------------
@@ -194,7 +193,7 @@ int PulseFormer(int axis_value,int range,int pos1,int pos2,word key1,word key2){
 int PWMPress (int mag,int range,int pos1,int pos2){ // Math to convert Joystick Value to duty cycle in ms of a keypress. Dutycycle time is 100ms
     float fduty = 0.0;
     int duty = 0;
-    fduty = (abs(mag)/range)*PWMTimeLenght;
+    fduty = ((abs(mag))/range)*PWMTimeLenght;
     duty = fduty-fduty%1;
     if (mag > 0){
         if(Debug) printf("PW Mag Cal Axis+: %i, %i \xa",mag,duty);
